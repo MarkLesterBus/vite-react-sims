@@ -11,14 +11,14 @@ import SVG from "./components/svg";
 
 function App() {
   return (
-    <div id="App" className="mt-5">
+    <div id="App" >
       <SVG />
       <Navigation />
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/about" element={<About />} />
       </Routes>

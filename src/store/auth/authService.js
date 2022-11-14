@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8000/";
+const url = "http://localhost:8000/api/";
 
 // Register user
 const register = async (userData) => {
@@ -23,8 +23,15 @@ const login = async (userData) => {
 };
 
 // Get user
-const user = async () => {
-  const response = await axios.get(url + "user");
+
+const user = async (token) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(url + "user", config);
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }

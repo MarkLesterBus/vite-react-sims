@@ -1,9 +1,67 @@
 import "../assets/signin.css";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
+
+import { login, getUser, reset } from "../store/auth/authSlice";
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, token, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+    if (isSuccess && token) {
+      dispatch(getUser());
+
+      navigate("/dashboard");
+    }
+    dispatch(reset());
+  }, [user, token, isError, isSuccess, message, navigate, dispatch]);
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const userData = {
+      email,
+      password,
+    };
+
+    dispatch(login(userData));
+  };
+
   return (
     <div className="text-center form-signin w-100 m-auto">
-      <form>
+      <form onSubmit={onSubmit}>
         <a
           href="/"
           className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
@@ -22,8 +80,11 @@ const Login = () => {
           <input
             type="email"
             className="form-control"
-            id="floatingInput"
-            placeholder="name@example.com"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={onChange}
           />
           <label htmlFor="floatingInput">Email address</label>
         </div>
@@ -31,8 +92,11 @@ const Login = () => {
           <input
             type="password"
             className="form-control"
-            id="floatingPassword"
-            placeholder="Password"
+            id="password"
+            name="password"
+            value={password}
+            placeholder="Enter password"
+            onChange={onChange}
           />
           <label htmlFor="floatingPassword">Password</label>
         </div>
