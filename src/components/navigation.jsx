@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../store/auth/authSlice";
+import { FaTachometerAlt, FaTable, FaServer, FaUsers } from 'react-icons/fa';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -94,65 +95,20 @@ const Navigation = () => {
                   </svg>
                 </a>
                 <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+
                   <li>
-                    <a href="#" className="nav-link text-secondary">
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
-                      >
-                        <use xlinkHref="#home" />
-                      </svg>
-                      Home
-                    </a>
+                    <Link to="/devices" className="nav-link text-white">
+                      <FaServer className="bi d-block mx-auto mb-1" size={24} />
+                      Devices
+                    </Link>
+
                   </li>
                   <li>
-                    <a href="#" className="nav-link text-white">
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
-                      >
-                        <use xlinkHref="#speedometer2" />
-                      </svg>
-                      Dashboard
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="nav-link text-white">
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
-                      >
-                        <use xlinkHref="#table" />
-                      </svg>
-                      Orders
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="nav-link text-white">
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
-                      >
-                        <use xlinkHref="#grid" />
-                      </svg>
-                      Products
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="nav-link text-white">
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
-                      >
-                        <use xlinkHref="#people-circle" />
-                      </svg>
-                      Customers
-                    </a>
+                    <Link to="/devices" className="nav-link text-white">
+                      <FaUsers className="bi d-block mx-auto mb-1" size={24} />
+                      Users
+                    </Link>
+
                   </li>
                 </ul>
               </div>

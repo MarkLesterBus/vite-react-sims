@@ -28,7 +28,7 @@ const Login = () => {
     if (isSuccess && token) {
       dispatch(getUser());
 
-      navigate("/dashboard");
+      navigate("/devices");
     }
     dispatch(reset());
   }, [user, token, isError, isSuccess, message, navigate, dispatch]);

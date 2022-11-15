@@ -4,7 +4,8 @@ import Navigation from "./components/navigation";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/devices/dashboard";
+import Devices from "./pages/devices/index";
 import FAQs from "./pages/faqs";
 import About from "./pages/about";
 import SVG from "./components/svg";
@@ -18,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/devices" element={<Devices />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/about" element={<About />} />
       </Routes>
