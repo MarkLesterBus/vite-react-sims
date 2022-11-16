@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import DeviceService from './DeviceService'
+import ResourceService from './SystemResource'
 
 const initialState = {
-    devices: [],
-    device: {},
+    resource: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -11,12 +10,12 @@ const initialState = {
 }
 
 // Create new goal
-export const createDevice = createAsyncThunk(
-    'devices/create',
-    async (device, thunkAPI) => {
+export const getResource = createAsyncThunk(
+    'system/resource',
+    async (uuid, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await DeviceService.create(device, token)
+            return await ResourceService.resource(uuid, token)
         } catch (error) {
             const message =
                 (error.response &&
@@ -47,60 +46,7 @@ export const getDevices = createAsyncThunk(
         }
     }
 )
-// Get user devices
-export const getDevice = createAsyncThunk(
-    'devices/get_one',
-    async (id, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().auth.token.access_token
-            return await DeviceService.get_one(token, id)
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString()
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
-export const updateDevice = createAsyncThunk(
-    'devices/update',
-    async (device, id, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().auth.token.access_token
-            return await DeviceService.update(device, id, token)
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString()
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
-// Delete user goal
-export const deleteDevice = createAsyncThunk(
-    'devices/delete',
-    async (id, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().auth.user.token
-            return await DeviceService.remove(id, token)
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString()
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
 export const deviceSlice = createSlice({
     name: 'device',

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8000/api/devices";
+const url = "http://localhost:8000/api/routers";
 
 
 // Create new goal
