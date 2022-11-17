@@ -18,6 +18,7 @@
     "match-sorter": "^6.3.1",
     "mdb-react-ui-kit": "^5.0.0",
     "react": "^18.2.0",
+    "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",

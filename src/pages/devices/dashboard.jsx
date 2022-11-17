@@ -9,6 +9,7 @@ import SystemMemory from "../../components/memory";
 import SystemStorage from "../../components/storage";
 import SystemModel from "../../components/model";
 import SystemUptime from "../../components/uptime";
+import SystemTraffic from "../../components/traffice";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const Dashboard = () => {
 
 
       </Row>
+      <SystemTraffic />
 
     </section>
   );
