@@ -1,8 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import ResourceService from './SystemResource'
+import SystemService from './SystemService'
+
+const system = JSON.parse(localStorage.getItem("system"));
+const resources = JSON.parse(localStorage.getItem("resources"));
+
 
 const initialState = {
-    resource: [],
+    system: system ? system : null,
+    resources: resources ? resources : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -10,12 +15,12 @@ const initialState = {
 }
 
 // Create new goal
-export const getResource = createAsyncThunk(
-    'system/resource',
+export const getSystem = createAsyncThunk(
+    'system/system',
     async (uuid, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await ResourceService.resource(uuid, token)
+            return await SystemService.system(token, uuid)
         } catch (error) {
             const message =
                 (error.response &&
@@ -27,14 +32,12 @@ export const getResource = createAsyncThunk(
         }
     }
 )
-
-// Get user devices
-export const getDevices = createAsyncThunk(
-    'devices/get_all',
-    async (_, thunkAPI) => {
+export const getResources = createAsyncThunk(
+    'system/resources',
+    async (uuid, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await DeviceService.get_all(token)
+            return await SystemService.resources(token, uuid)
         } catch (error) {
             const message =
                 (error.response &&
@@ -48,92 +51,52 @@ export const getDevices = createAsyncThunk(
 )
 
 
-export const deviceSlice = createSlice({
-    name: 'device',
+
+
+export const systemSlice = createSlice({
+    name: 'system',
     initialState,
     reducers: {
         reset: (state) => {
+
             state.isLoading = false
             state.isSuccess = false
             state.isError = false
             state.message = ''
-        },
+
+        }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createDevice.pending, (state) => {
+            .addCase(getSystem.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(createDevice.fulfilled, (state, action) => {
+            .addCase(getSystem.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.devices = action.payload
+                state.system = action.payload
             })
-            .addCase(createDevice.rejected, (state, action) => {
+            .addCase(getSystem.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })
-            .addCase(getDevices.pending, (state) => {
+            .addCase(getResources.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getDevices.fulfilled, (state, action) => {
+            .addCase(getResources.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.devices = action.payload
+                state.resources = action.payload
             })
-            .addCase(getDevices.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.message = action.payload
-            })
-            .addCase(getDevice.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(getDevice.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
-                state.device = action.payload
-            })
-            .addCase(getDevice.rejected, (state, action) => {
+            .addCase(getResources.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })
 
-
-            .addCase(updateDevice.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(updateDevice.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
-                state.device = action.payload
-            })
-            .addCase(updateDevice.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.message = action.payload
-            })
-
-
-            .addCase(deleteDevice.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(deleteDevice.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
-                state.devices = state.devices.filter(
-                    (device) => device.id !== action.payload.id
-                )
-            })
-            .addCase(deleteDevice.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.message = action.payload
-            })
     },
 })
 
-export const { reset } = deviceSlice.actions
-export default deviceSlice.reducer
+export const { reset } = systemSlice.actions
+export default systemSlice.reducer
