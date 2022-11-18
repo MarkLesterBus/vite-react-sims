@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getResources, reset } from "../../store/devices/system/systemSlice";
+import { getResources, getTraffic, reset } from "../../store/devices/system/systemSlice";
 import { Row, Col } from "react-bootstrap";
 import SystemTime from "../../components/system-time";
 import SystemCPU from "../../components/cpu";
@@ -15,13 +15,17 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const { uuid } = useParams();
+  const ether = "ether1";
 
   const { token } = useSelector(
     (state) => state.auth
   );
-  const { resources, isLoading, isError, isSuccess, message } = useSelector(
+
+  const { resources, rx, tx, timeline, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.system
   );
+
+
 
   useEffect(() => {
     if (isError) {
@@ -32,10 +36,24 @@ const Dashboard = () => {
       navigate("/login");
     }
 
+
+  }, []);
+  useEffect(() => {
+    const timer2 = setTimeout(() => {
+
+      const data = {
+        uuid: uuid,
+        intface: ether
+      }
+      dispatch(getTraffic(data));
+    }, 5000);
+    return () => clearTimeout(timer2);
+  }, [rx, tx, timeline, dispatch]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(getResources(uuid));
     }, 500);
-
     return () => clearTimeout(timer);
 
   }, [resources, dispatch]);
@@ -48,17 +66,21 @@ const Dashboard = () => {
         </div>
       </div>
       <Row>
-        <Col lg={3} md={3} sm={6}>
-          <SystemTime resources={resources} />
-          <SystemCPU resources={resources} />
-        </Col>
-        <Col lg={3} md={3} sm={3}>
-          <SystemUptime resources={resources} />
-          <SystemModel resources={resources} />
+        <Col>
+          <SystemTraffic tx={tx} rx={rx} timeline={timeline} />
+
         </Col>
 
         <Col>
           <Row>
+            <Col lg={6} md={6} sm={6}>
+              <SystemTime resources={resources} />
+              <SystemCPU resources={resources} />
+            </Col>
+            <Col lg={6} md={6} sm={3}>
+              <SystemUptime resources={resources} />
+              <SystemModel resources={resources} />
+            </Col>
             <Col lg={6} md={6} sm={6}>
               <SystemStorage resources={resources} />
 
@@ -70,10 +92,7 @@ const Dashboard = () => {
           </Row>
         </Col>
 
-
-
       </Row>
-      <SystemTraffic />
 
     </section>
   );

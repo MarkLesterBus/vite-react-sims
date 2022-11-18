@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { Table, Col, Row, Button, Modal, Form, Spinner } from "react-bootstrap";
 import { FaServer, FaPlus, FaCogs, FaTrash, FaUsers } from "react-icons/fa";
 import {
-  getDevices,
+  getDevices, deleteDevice,
   reset,
 } from "../../store/devices/deviceSlice";
 import CreateDevice from "../../components/device-create";
+import DeleteDevice from "../../components/device-delete";
 
 function Devices() {
 
@@ -120,15 +121,13 @@ function Devices() {
                   <td>{device.port}</td>
                   <td>
                     <div>
-                      <Button href={`/devices/${device.uuid}/dashboard`} variant="info" size="sm">
+                      <Button href={`/devices/${device.id}/dashboard`} variant="info" size="sm">
                         <FaCogs /> Manage
                       </Button>{" "}
                       <Button variant="warning" size="sm">
                         <FaServer /> Edit
                       </Button>{" "}
-                      <Button variant="danger" size="sm">
-                        <FaTrash /> Delete
-                      </Button>
+                      <DeleteDevice id={device.uuid} />
                     </div>
                   </td>
                 </tr>

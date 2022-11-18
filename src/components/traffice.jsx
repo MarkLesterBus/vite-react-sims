@@ -1,20 +1,38 @@
 
-import { Row, Col } from "react-bootstrap";
-import { FaServer } from "react-icons/fa";
 import Chart from 'react-apexcharts'
-const SystemTraffic = ({ resources }) => {
 
+const SystemTraffic = ({ tx, rx, timeline }) => {
+    function bytesForHuman(bytes) {
+        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+
+        let i = 0
+
+        for (i; bytes > 1024; i++) {
+            bytes /= 1024;
+        }
+        return parseInt(bytes) + ' ' + units[i]
+    }
     const series = [{
-        name: 'series1',
-        data: [31, 40, 28, 51, 42, 109, 100]
+        name: 'Upload',
+        data: tx
     }, {
-        name: 'series2',
-        data: [11, 32, 45, 32, 34, 52, 41]
+        name: 'Download',
+        data: rx
     }];
+
+
     const options = {
         chart: {
+            id: "realtime",
             height: 350,
-            type: 'area'
+            type: 'area',
+            animations: {
+                enabled: true,
+                easing: 'linear',
+                dynamicAnimation: {
+                    speed: 5000
+                }
+            },
         },
         dataLabels: {
             enabled: false
@@ -22,9 +40,16 @@ const SystemTraffic = ({ resources }) => {
         stroke: {
             curve: 'smooth'
         },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return bytesForHuman(value);
+                }
+            },
+        },
         xaxis: {
-            type: 'datetime',
-            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+            type: 'time',
+            categories: timeline
         },
         tooltip: {
             x: {
@@ -35,7 +60,7 @@ const SystemTraffic = ({ resources }) => {
     return (
         <div className="card bg-light mb-3" >
             <div className="card-body text-white" id="chart">
-                <Chart className="text-dark" options={options} series={series} type="area" height={350} />
+                <Chart className="text-dark" options={options} series={series} type="area" height={475} />
 
             </div>
         </div>

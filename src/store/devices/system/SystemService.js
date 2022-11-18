@@ -29,11 +29,23 @@ const resources = async (token, uuid) => {
     }
     return response.data
 }
+const traffic = async (token, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${data['uuid']}/traffic/${data['intface']}`, config)
+    if (response.data) {
+        localStorage.setItem("traffic", JSON.stringify(response.data));
+    }
+    return response.data
+}
 
 
 
 const SystemService = {
-    system, resources,
+    system, resources, traffic
 }
 
 export default SystemService

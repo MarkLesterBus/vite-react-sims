@@ -18,6 +18,7 @@ const SystemMemory = ({ resources }) => {
                 <h5 className="card-title">Memory</h5>
                 <PieChart
                     data={data}
+                    style={{ height: '150px' }}
                 />
                 <p className="card-text">
                     <span>

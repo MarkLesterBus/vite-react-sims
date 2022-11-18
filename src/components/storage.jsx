@@ -19,6 +19,7 @@ const SystemStorage = ({ resources }) => {
                 <h5 className="card-title">Storage</h5>
                 <PieChart
                     data={data}
+                    style={{ height: '150px' }}
                 />
                 <p className="card-text">
                     <span>
