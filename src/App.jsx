@@ -19,6 +19,7 @@ import Logs from "./pages/devices/logs";
 import System from "./pages/devices/system";
 import Main from "./pages/devices/main";
 import ErrorPage from "./pages/devices/error";
+import EditDevice from "./pages/devices/device";
 
 function App() {
   const { uuid } = useParams();
@@ -28,9 +29,10 @@ function App() {
       <Navigation />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} errorElement={ErrorPage} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/devices" element={<Devices />} />
+        <Route exact path="/devices/edit/:id" element={<EditDevice />} />
         <Route exact path="/devices/:uuid/" element={<Main uuid={uuid} />} >
           {/* <Route exact path="*" element={<ErrorPage />} /> */}
           <Route exact path="dashboard" element={<Dashboard />} />

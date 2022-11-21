@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8000/api/routers/";
+const url = "http://localhost:8000/api/system/";
 
 
 // Get user goals
@@ -11,7 +11,7 @@ const system = async (token, uuid) => {
             Authorization: `Bearer ${token}`,
         },
     }
-    const response = await axios.get(url + `${uuid}/system`, config)
+    const response = await axios.get(url + `${uuid}`, config)
     if (response.data) {
         localStorage.setItem("system", JSON.stringify(response.data));
     }

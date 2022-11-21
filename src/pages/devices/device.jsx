@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
 import {
-    createDevice, updateDevice,
+    updateDevice,
 
-} from "../store/devices/deviceSlice";
-import { FaPlus } from "react-icons/fa";
+} from "../../store/devices/deviceSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { FaPlus, FaServer, FaUsers } from "react-icons/fa";
 import { Col, Row, Button, Modal, Form, Spinner } from "react-bootstrap";
 
-const CreateDevice = () => {
-    const [show, setShow] = useState(false);
+const EditDevice = () => {
+    const { id } = useParams();
+
     const [device, setDevice] = useState({
         name: "",
         host: "",
@@ -46,19 +49,63 @@ const CreateDevice = () => {
         dispatch(updateDevice(deviceData));
     };
     return (
-        <div className="btn-group me-2">
-            <button
-                type="button"
-                onClick={handleShow}
-                className="btn btn-sm btn-outline-secondary"
-            >
-                <FaPlus className="mr-2" />
-                New Device
-            </button>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>New Device</Modal.Title>
-                </Modal.Header>
+        <>
+            <header>
+                <div className="px-3 py-2 text-bg-dark">
+                    <div className="container">
+                        <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                            <a
+                                href="/"
+                                className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
+                            >
+                                <svg
+                                    className="bi me-2"
+                                    width={40}
+                                    height={32}
+                                    role="img"
+                                    aria-label="Bootstrap"
+                                >
+                                    <use xlinkHref="#bootstrap" />
+                                </svg>
+                            </a>
+                            <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                                <li>
+                                    <NavLink
+                                        to="/devices"
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "nav-link text-secondary"
+                                                : "nav-link text-white"
+                                        }
+                                    >
+                                        <FaServer className="bi d-block mx-auto mb-1" size={24} />
+                                        Devices
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to="/accounts"
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "nav-link text-secondary"
+                                                : "nav-link text-white"
+                                        }
+                                    >
+                                        <FaUsers className="bi d-block mx-auto mb-1" size={24} />
+                                        Accounts
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <section className="container">
+                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 className="h2">Dashboard {id}</h1>
+                    <div className="btn-toolbar mb-2 mb-md-0">
+                    </div>
+                </div>
                 <Form onSubmit={onSubmit}>
                     <Modal.Body>
                         <Form.Group className="mb-3">
@@ -129,7 +176,7 @@ const CreateDevice = () => {
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
-                        </Button>
+                        </Button>{' '}
                         <Button type="submit" disabled={isLoading} variant="primary">
                             {isLoading ? (
                                 <Spinner
@@ -145,10 +192,11 @@ const CreateDevice = () => {
                         </Button>
                     </Modal.Footer>
                 </Form>
-            </Modal>
-        </div>
+            </section>
+        </>
+
     );
 
 }
 
-export default CreateDevice;
+export default EditDevice;

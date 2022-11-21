@@ -178,7 +178,7 @@ export const deviceSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.devices = state.devices.filter(
-                    (device) => device.id !== action.payload.uuid
+                    (device) => device.id !== action.payload.id
                 )
             })
             .addCase(deleteDevice.rejected, (state, action) => {
