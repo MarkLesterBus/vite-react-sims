@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import {
-    updateDevice,
+    updateDevice, getDevice, reset
 
 } from "../../store/devices/deviceSlice";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,26 +11,43 @@ import { Col, Row, Button, Modal, Form, Spinner } from "react-bootstrap";
 
 const EditDevice = () => {
     const { id } = useParams();
-
-    const [device, setDevice] = useState({
+    const [_device, _setDevice] = useState({
         name: "",
         host: "",
         user: "",
         pass: "",
         port: "",
     });
+    const { name, host, user, pass, port } = _device;
 
-    const { name, host, user, pass, port } = device;
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const dispatch = useDispatch();
-    const { devices, isLoading, isError, message } = useSelector(
+    const { token } = useSelector(
+        (state) => state.auth
+    );
+    const { device, isLoading, isError, message } = useSelector(
         (state) => state.devices
     );
 
+    useEffect(() => {
+        if (isError) {
+            console.log(message);
+        }
+
+        if (!token) {
+            navigate("/login");
+        }
+
+        dispatch(getDevice(id))
+
+        return () => {
+            dispatch(reset())
+        }
+    }, [dispatch])
+
+
     const onChange = (e) => {
-        setDevice((prevState) => ({
+        _setDevice((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
@@ -102,96 +119,96 @@ const EditDevice = () => {
             </header>
             <section className="container">
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h2">Dashboard {id}</h1>
+                    <h1 className="h2">Edit Device</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
                     </div>
                 </div>
-                <Form onSubmit={onSubmit}>
-                    <Modal.Body>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Device Name</Form.Label>
-                            <Form.Control
-                                onChange={onChange}
-                                id="name"
-                                name="name"
-                                value={name}
-                                type="text"
-                                placeholder="Name"
-                            />
-                        </Form.Group>
+                <Row>
+                    <Col md={5}>
+                        <Form onSubmit={onSubmit}>
 
-                        <Row>
-                            <Col sm={8}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Host Address</Form.Label>
-
-                                    <Form.Control
-                                        onChange={onChange}
-                                        id="host"
-                                        name="host"
-                                        value={host}
-                                        type="text"
-                                        placeholder="IP address"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col sm={4}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Port</Form.Label>
-
-                                    <Form.Control
-                                        onChange={onChange}
-                                        id="port"
-                                        name="port"
-                                        value={port}
-                                        type="text"
-                                        placeholder="Port"
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Form.Group className="mb-3">
-                            <Form.Label>User</Form.Label>
-                            <Form.Control
-                                onChange={onChange}
-                                id="user"
-                                name="user"
-                                value={user}
-                                type="text"
-                                placeholder="Username"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                onChange={onChange}
-                                id="pass"
-                                name="pass"
-                                value={pass}
-                                type="password"
-                                placeholder="password"
-                            />
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>{' '}
-                        <Button type="submit" disabled={isLoading} variant="primary">
-                            {isLoading ? (
-                                <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
+                            <Form.Group className="mb-3">
+                                <Form.Label>Device Name</Form.Label>
+                                <Form.Control
+                                    onChange={onChange}
+                                    id="name"
+                                    name="name"
+                                    value={device.name}
+                                    type="text"
+                                    placeholder="Name"
                                 />
-                            ) : (
-                                "Save Device"
-                            )}
-                        </Button>
-                    </Modal.Footer>
-                </Form>
+                            </Form.Group>
+
+                            <Row>
+                                <Col sm={8}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Host Address</Form.Label>
+
+                                        <Form.Control
+                                            onChange={onChange}
+                                            id="host"
+                                            name="host"
+                                            value={device.host}
+                                            type="text"
+                                            placeholder="IP address"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col sm={4}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Port</Form.Label>
+
+                                        <Form.Control
+                                            onChange={onChange}
+                                            id="port"
+                                            name="port"
+                                            value={device.port}
+                                            type="text"
+                                            placeholder="Port"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Form.Group className="mb-3">
+                                <Form.Label>User</Form.Label>
+                                <Form.Control
+                                    onChange={onChange}
+                                    id="user"
+                                    name="user"
+                                    value={device.user}
+                                    type="text"
+                                    placeholder="Username"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    onChange={onChange}
+                                    id="pass"
+                                    name="pass"
+                                    value={device.pass}
+                                    type="password"
+                                    placeholder="password"
+                                />
+                            </Form.Group>
+
+                            <Button type="submit" disabled={isLoading} variant="primary">
+                                {isLoading ? (
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    "Save Changes"
+                                )}
+                            </Button>
+
+                        </Form>
+                    </Col>
+                </Row>
             </section>
         </>
 

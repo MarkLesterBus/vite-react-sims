@@ -10,6 +10,7 @@ import SystemStorage from "../../components/storage";
 import SystemModel from "../../components/model";
 import SystemUptime from "../../components/uptime";
 import SystemTraffic from "../../components/traffice";
+import SystemLogs from "../../components/logs";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,34 +67,38 @@ const Dashboard = () => {
         </div>
       </div>
       <Row>
-        <Col>
-          <SystemTraffic tx={tx} rx={rx} timeline={timeline} />
+        <Col lg={3} md={6} sm={12}>
+          <SystemModel resources={resources} />
 
         </Col>
+        <Col lg={3} md={6} sm={12}>
+          <SystemCPU resources={resources} />
 
-        <Col>
-          <Row>
-            <Col lg={6} md={6} sm={6}>
-              <SystemTime resources={resources} />
-              <SystemCPU resources={resources} />
-            </Col>
-            <Col lg={6} md={6} sm={3}>
-              <SystemUptime resources={resources} />
-              <SystemModel resources={resources} />
-            </Col>
-            <Col lg={6} md={6} sm={6}>
-              <SystemStorage resources={resources} />
+        </Col>
+        <Col lg={3} md={6} sm={12}>
+          <SystemTime resources={resources} />
 
-            </Col>
-            <Col lg={6} md={6} sm={6}>
-              <SystemMemory resources={resources} />
+        </Col>
+        <Col lg={3} md={6} sm={12}>
+          <SystemUptime resources={resources} />
 
-            </Col>
-          </Row>
         </Col>
 
       </Row>
+      <Row>
+        <Col lg={8} md={6} sm={12}>
+          <SystemTraffic tx={tx} rx={rx} timeline={timeline} />
+          <SystemLogs uuid={uuid} />
 
+
+        </Col>
+
+        <Col>
+          <SystemStorage resources={resources} />
+          <SystemMemory resources={resources} />
+        </Col>
+
+      </Row>
     </section>
   );
 };

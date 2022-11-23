@@ -14,7 +14,7 @@ const SystemStorage = ({ resources }) => {
 
     ];
     return (
-        <div className="card text-white bg-dark mb-3" style={{ maxWidth: '18rem' }}>
+        <div className="card text-black bg-light mb-3" >
             <div className="card-body">
                 <h5 className="card-title">Storage</h5>
                 <PieChart

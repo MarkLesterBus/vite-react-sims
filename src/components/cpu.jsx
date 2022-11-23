@@ -4,7 +4,7 @@ import { FaClock, FaMicrochip } from "react-icons/fa";
 const SystemCPU = ({ resources }) => {
 
     return (
-        <div className="card text-white bg-dark mb-3" style={{ maxWidth: '18rem' }}>
+        <div className="card text-black bg-light mb-3" >
             <div className="card-body">
                 <Row>
                     <Col sm={3} className="d-flex align-items-center">

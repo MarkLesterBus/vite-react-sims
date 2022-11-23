@@ -4,6 +4,7 @@ import SystemService from './SystemService'
 const system = JSON.parse(localStorage.getItem("system"));
 const resources = JSON.parse(localStorage.getItem("resources"));
 const traffic = JSON.parse(localStorage.getItem("traffic"));
+const logs = JSON.parse(localStorage.getItem("logs"));
 
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
     tx: [],
     rx: [],
     timeline: [],
+    logs: logs ? logs : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -61,6 +63,23 @@ export const getTraffic = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.token.access_token
             return await SystemService.traffic(token, data)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+export const getLogs = createAsyncThunk(
+    'system/logs',
+    async (uuid, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.logs(token, uuid)
         } catch (error) {
             const message =
                 (error.response &&
@@ -128,6 +147,20 @@ export const systemSlice = createSlice({
                 state.timeline.push(`${today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()}`)
             })
             .addCase(getTraffic.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            .addCase(getLogs.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getLogs.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.logs = action.payload
+            })
+            .addCase(getLogs.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

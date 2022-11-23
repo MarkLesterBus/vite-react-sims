@@ -113,25 +113,30 @@ function Devices() {
               </tr>
             </thead>
             <tbody>
-              {devices.map((device) => (
-                <tr key={device.uuid}>
-                  <td>{device.uuid}</td>
-                  <td>{device.name}</td>
-                  <td>{device.host}</td>
-                  <td>{device.port}</td>
-                  <td>
-                    <div>
-                      <Button href={`/devices/${device.uuid}/dashboard`} variant="info" size="sm">
-                        <FaCogs /> Manage
-                      </Button>{" "}
-                      <Button href={`/devices/edit/${device.id}`} variant="warning" size="sm">
-                        <FaServer /> Edit
-                      </Button>{" "}
-                      <DeleteDevice id={device.id} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {
+                Object.keys(devices).map((device, index) => (
+
+                  <tr key={index}>
+                    <td>{devices[device].uuid}</td>
+                    <td>{devices[device].name}</td>
+                    <td>{devices[device].host}</td>
+                    <td>{devices[device].port}</td>
+                    <td>
+                      <div>
+                        <Button href={`/devices/${devices[device].uuid}/dashboard`} variant="info" size="sm">
+                          <FaCogs /> Manage
+                        </Button>{" "}
+                        <Button href={`/devices/edit/${devices[device].id}`} variant="warning" size="sm">
+                          <FaServer /> Edit
+                        </Button>{" "}
+                        <DeleteDevice id={devices[device].id} />
+                      </div>
+                    </td>
+                  </tr>
+
+                ))
+              }
+
             </tbody>
           </Table>
         </Col>

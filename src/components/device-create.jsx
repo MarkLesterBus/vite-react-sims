@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    createDevice,
+    createDevice, getDevices
 
 } from "../store/devices/deviceSlice";
 import { FaPlus } from "react-icons/fa";
@@ -44,6 +44,7 @@ const CreateDevice = () => {
         };
 
         dispatch(createDevice(deviceData));
+        dispatch(getDevices());
     };
     return (
         <div className="btn-group me-2">

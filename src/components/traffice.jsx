@@ -1,5 +1,7 @@
 
 import Chart from 'react-apexcharts'
+import { getTraffic, reset } from "../store/devices/system/systemSlice";
+
 
 const SystemTraffic = ({ tx, rx, timeline }) => {
     function bytesForHuman(bytes) {
@@ -14,10 +16,10 @@ const SystemTraffic = ({ tx, rx, timeline }) => {
     }
     const series = [{
         name: 'Upload',
-        data: tx
+        data: Object.keys(tx).length > 10 ? tx.slice(Object.keys(tx).length - 10, Object.keys(tx).length) : tx
     }, {
         name: 'Download',
-        data: rx
+        data: Object.keys(rx).length > 10 ? rx.slice(Object.keys(rx).length - 10, Object.keys(rx).length) : rx
     }];
 
 
@@ -25,7 +27,7 @@ const SystemTraffic = ({ tx, rx, timeline }) => {
         chart: {
             id: "realtime",
             height: 350,
-            type: 'area',
+            type: 'line',
             animations: {
                 enabled: true,
                 easing: 'linear',
@@ -34,6 +36,7 @@ const SystemTraffic = ({ tx, rx, timeline }) => {
                 }
             },
         },
+
         dataLabels: {
             enabled: false
         },
@@ -49,7 +52,7 @@ const SystemTraffic = ({ tx, rx, timeline }) => {
         },
         xaxis: {
             type: 'time',
-            categories: timeline
+            categories: Object.keys(timeline).length > 10 ? timeline.slice(Object.keys(timeline).length - 10, Object.keys(timeline).length) : timeline
         },
         tooltip: {
             x: {
@@ -59,8 +62,10 @@ const SystemTraffic = ({ tx, rx, timeline }) => {
     };
     return (
         <div className="card bg-light mb-3" >
-            <div className="card-body text-white" id="chart">
-                <Chart className="text-dark" options={options} series={series} type="area" height={475} />
+            <div className="card-body text-black" >
+                <h5 className="card-title">Traffic</h5>
+
+                <Chart id="chart" className="text-dark" options={options} series={series} height={350} />
 
             </div>
         </div>

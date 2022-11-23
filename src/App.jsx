@@ -20,6 +20,7 @@ import System from "./pages/devices/system";
 import Main from "./pages/devices/main";
 import ErrorPage from "./pages/devices/error";
 import EditDevice from "./pages/devices/device";
+import Footer from "./components/footer";
 
 function App() {
   const { uuid } = useParams();
@@ -50,6 +51,7 @@ function App() {
         <Route path="about" element={<About />} />
 
       </Routes>
+      <Footer />
     </div>
   );
 }
