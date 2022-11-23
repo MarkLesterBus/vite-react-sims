@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getInterfaces, reset } from "../../store/devices/system/systemSlice";
 import { useEffect } from "react";
-import { Col, Table, Spinner, Badge, Button } from "react-bootstrap";
+import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed } from "react-icons/fa";
 const Interfaces = () => {
 
@@ -36,7 +36,7 @@ const Interfaces = () => {
     return (
         <>
             <section className="container">
-                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
                     <h1 className="h2">Interfaces  {uuid} {isLoading ? (
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -45,62 +45,77 @@ const Interfaces = () => {
                     <div className="btn-toolbar mb-2 mb-md-0">
                     </div>
                 </div>
-                <Col>
-                    <Table className="mt-2" striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Default Name</th>
-                                <th>Type</th>
-                                <th>Mac Address</th>
-                                <th>Upload</th>
-                                <th>Download</th>
-                                <th>Running</th>
-                                <th>Disabled</th>
-                                <th>Last Link-up Time</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                Object.keys(interfaces).map((iface, index) => (
+                <Tabs
+                    defaultActiveKey="interface"
+                    transition={false}
+                    id="noanim-tab-example"
+                    className="mb-3"
+                >
+                    <Tab eventKey="interface" title="Interfaces">
+                        <Table className="mt-2" striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Default Name</th>
+                                    <th>Type</th>
+                                    <th>Mac Address</th>
+                                    <th>Upload</th>
+                                    <th>Download</th>
+                                    <th>Running</th>
+                                    <th>Disabled</th>
+                                    <th>Last Link-up Time</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Object.keys(interfaces).map((iface, index) => (
 
-                                    <tr key={index}>
-                                        <td>{interfaces[iface].name}</td>
-                                        <td>{interfaces[iface]['default-name']}</td>
-                                        <td>{interfaces[iface]['type']}</td>
-                                        <td>{interfaces[iface]['mac-address']}</td>
-                                        <td>{interfaces[iface]['tx-byte']}</td>
-                                        <td>{interfaces[iface]['rx-byte']}</td>
-                                        <td>{interfaces[iface]['running'] == "true" ?
-                                            (<Badge bg="success">
-                                                Running
-                                            </Badge>) : (<Badge bg="danger">
-                                                Stopped
-                                            </Badge>)}</td>
-                                        <td>{interfaces[iface]['disabled'] == "false" ?
-                                            (<Badge bg="success">
-                                                Enabled
-                                            </Badge>) : (<Badge bg="warning">
-                                                Disabled
-                                            </Badge>)}</td>
-                                        <td>{interfaces[iface]['last-link-up-time']}</td>
-                                        <td>
-                                            <div>
-                                                <Button href="" variant="info" size="sm">
-                                                    <FaDoorClosed /> Disable
-                                                </Button>{" "}
+                                        <tr key={index}>
+                                            <td>{interfaces[iface].name}</td>
+                                            <td>{interfaces[iface]['default-name']}</td>
+                                            <td>{interfaces[iface]['type']}</td>
+                                            <td>{interfaces[iface]['mac-address']}</td>
+                                            <td>{interfaces[iface]['tx-byte']}</td>
+                                            <td>{interfaces[iface]['rx-byte']}</td>
+                                            <td>{interfaces[iface]['running'] == "true" ?
+                                                (<Badge bg="success">
+                                                    Running
+                                                </Badge>) : (<Badge bg="danger">
+                                                    Stopped
+                                                </Badge>)}</td>
+                                            <td>{interfaces[iface]['disabled'] == "false" ?
+                                                (<Badge bg="success">
+                                                    Enabled
+                                                </Badge>) : (<Badge bg="warning">
+                                                    Disabled
+                                                </Badge>)}</td>
+                                            <td>{interfaces[iface]['last-link-up-time']}</td>
+                                            <td>
+                                                <div>
+                                                    <Button href="" variant="info" size="sm">
+                                                        <FaDoorClosed /> Disable
+                                                    </Button>{" "}
 
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                ))
-                            }
+                                    ))
+                                }
 
-                        </tbody>
-                    </Table>
-                </Col>
+                            </tbody>
+                        </Table>
+                    </Tab>
+                    <Tab eventKey="vlan" title="VLANs">
+                    </Tab>
+                    <Tab eventKey="bridge" title="Bridges">
+                    </Tab>
+                    <Tab eventKey="port" title="Ports">
+                    </Tab>
+
+                </Tabs>
+
             </section>
         </>
 
