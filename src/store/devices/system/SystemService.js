@@ -54,11 +54,23 @@ const logs = async (token, uuid) => {
     }
     return response.data
 }
+const interfaces = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/interfaces`, config)
+    if (response.data) {
+        localStorage.setItem("interfaces", JSON.stringify(response.data));
+    }
+    return response.data
+}
 
 
 
 const SystemService = {
-    system, resources, traffic, logs
+    system, resources, traffic, logs, interfaces
 }
 
 export default SystemService
