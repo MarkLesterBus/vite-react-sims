@@ -1,6 +1,6 @@
 
 import Chart from 'react-apexcharts'
-import { getTraffic, reset } from "../store/devices/system/systemSlice";
+import { getTraffic, reset } from "../store/devices/system/system";
 
 
 const SystemTraffic = ({ tx, rx, timeline }) => {

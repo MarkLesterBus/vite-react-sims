@@ -1,9 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getInterfaces, reset } from "../../store/devices/system/systemSlice";
+import { reset } from "../../store/devices/system/system";
+import { getInterfaces } from "../../store/devices/system/interface";
+import { getBridges } from "../../store/devices/system/bridge";
+import { getPorts } from "../../store/devices/system/ports";
+import { getVlans } from "../../store/devices/system/vlan";
 import { useEffect } from "react";
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
-import { FaCogs, FaDoorClosed } from "react-icons/fa";
+import { FaCogs, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
+import { MdCheck, MdClose } from "react-icons/md";
+import CreateInterface from "../../components/interface-create";
 const Interfaces = () => {
 
 
@@ -14,7 +20,10 @@ const Interfaces = () => {
 
     const { token } = useSelector((state) => state.auth);
     const { interfaces, isLoading, isError, message } = useSelector(
-        (state) => state.system
+        (state) => state.interfaces
+    );
+    const { bridges, } = useSelector(
+        (state) => state.bridges
     );
 
     useEffect(() => {
@@ -27,11 +36,17 @@ const Interfaces = () => {
         }
 
         dispatch(getInterfaces(uuid));
+        dispatch(getBridges(uuid))
+        dispatch(getPorts(uuid))
+        dispatch(getVlans(uuid))
+
 
         return () => {
             dispatch(reset());
         };
-    }, [token, dispatch]);
+    }, [dispatch]);
+
+
 
     return (
         <>
@@ -43,6 +58,7 @@ const Interfaces = () => {
                         </Spinner>
                     ) : ""}</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
+                        <CreateInterface uuid={uuid} />
                     </div>
                 </div>
                 <Tabs
@@ -80,9 +96,9 @@ const Interfaces = () => {
                                             <td>{interfaces[iface]['rx-byte']}</td>
                                             <td>{interfaces[iface]['running'] == "true" ?
                                                 (<Badge bg="success">
-                                                    Running
+                                                    <FaPlay size={15} />
                                                 </Badge>) : (<Badge bg="danger">
-                                                    Stopped
+                                                    <FaStop size={15} />
                                                 </Badge>)}</td>
                                             <td>{interfaces[iface]['disabled'] == "false" ?
                                                 (<Badge bg="success">
@@ -107,13 +123,134 @@ const Interfaces = () => {
                             </tbody>
                         </Table>
                     </Tab>
-                    <Tab eventKey="vlan" title="VLANs">
-                    </Tab>
                     <Tab eventKey="bridge" title="Bridges">
+                        <Table className="mt-2" striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>ARP</th>
+                                    <th>Mac Address</th>
+                                    <th>Protocol</th>
+                                    <th>VLAN Filtering</th>
+                                    <th>Running</th>
+                                    <th>Disabled</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Object.keys(bridges).map((bridge, i) => (
+
+                                        <tr key={i}>
+                                            <td>{bridges[bridge]['name']}</td>
+                                            <td>{bridges[bridge]['arp'] == "enabled" ?
+                                                (<Badge bg="success">
+                                                    <MdCheck size={15} />
+                                                </Badge>) : (<Badge bg="danger">
+                                                    <MdClose size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['mac-address']}</td>
+                                            <td>{bridges[bridge]['protocol-mode']}</td>
+                                            <td>{bridges[bridge]['vlan-filtering'] == "false" ?
+                                                (<Badge bg="danger">
+                                                    <MdClose size={15} />
+                                                </Badge>) : (<Badge bg="success">
+                                                    <MdCheck size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['running'] == "true" ?
+                                                (<Badge bg="success">
+                                                    <FaPlay size={15} />
+                                                </Badge>) : (<Badge bg="danger">
+                                                    <FaStop size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['disabled'] == "false" ?
+                                                (<Badge bg="success">
+                                                    False
+                                                </Badge>) : (<Badge bg="danger">
+                                                    Disabled
+                                                </Badge>)}</td>
+
+                                            <td>
+                                                <div>
+                                                    <Button href="" variant="info" className="text-white" size="sm">
+                                                        <MdClose size={20} /> Disable
+                                                    </Button>{" "}
+
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    ))
+                                }
+
+                            </tbody>
+                        </Table>
+                    </Tab>
+                    <Tab eventKey="vlan" title="VLAN">
                     </Tab>
                     <Tab eventKey="port" title="Ports">
-                    </Tab>
+                        <Table className="mt-2" striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>ARP</th>
+                                    <th>Mac Address</th>
+                                    <th>Protocol</th>
+                                    <th>VLAN Filtering</th>
+                                    <th>Running</th>
+                                    <th>Disabled</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Object.keys(bridges).map((bridge, i) => (
 
+                                        <tr key={i}>
+                                            <td>{bridges[bridge]['name']}</td>
+                                            <td>{bridges[bridge]['arp'] == "enabled" ?
+                                                (<Badge bg="success">
+                                                    <MdCheck size={15} />
+                                                </Badge>) : (<Badge bg="danger">
+                                                    <MdClose size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['mac-address']}</td>
+                                            <td>{bridges[bridge]['protocol-mode']}</td>
+                                            <td>{bridges[bridge]['vlan-filtering'] == "false" ?
+                                                (<Badge bg="danger">
+                                                    <MdClose size={15} />
+                                                </Badge>) : (<Badge bg="success">
+                                                    <MdCheck size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['running'] == "true" ?
+                                                (<Badge bg="success">
+                                                    <FaPlay size={15} />
+                                                </Badge>) : (<Badge bg="danger">
+                                                    <FaStop size={15} />
+                                                </Badge>)}</td>
+                                            <td>{bridges[bridge]['disabled'] == "false" ?
+                                                (<Badge bg="success">
+                                                    False
+                                                </Badge>) : (<Badge bg="danger">
+                                                    Disabled
+                                                </Badge>)}</td>
+
+                                            <td>
+                                                <div>
+                                                    <Button href="" variant="info" className="text-white" size="sm">
+                                                        <MdClose size={20} /> Disable
+                                                    </Button>{" "}
+
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    ))
+                                }
+
+                            </tbody>
+                        </Table>
+                    </Tab>
                 </Tabs>
 
             </section>

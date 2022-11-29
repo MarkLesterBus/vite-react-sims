@@ -69,8 +69,87 @@ const interfaces = async (token, uuid) => {
 
 
 
+
+const vlans = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/vlans`, config)
+    if (response.data) {
+        localStorage.setItem("vlans", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const create_vlans = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/vlans`, data, config)
+    return response.data
+}
+
+
+
+
+
+
+const bridges = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/bridges`, config)
+    if (response.data) {
+        localStorage.setItem("bridges", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const create_bridges = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/bridges`, data, config)
+    return response.data
+}
+
+
+
+
+
+const ports = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/ports`, config)
+    if (response.data) {
+        localStorage.setItem("ports", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const create_ports = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/ports`, data, config)
+
+    return response.data
+}
+
+
+
 const SystemService = {
-    system, resources, traffic, logs, interfaces
+    system, resources, traffic, logs, interfaces, bridges, ports, vlans, create_vlans, create_bridges, create_ports
 }
 
 export default SystemService

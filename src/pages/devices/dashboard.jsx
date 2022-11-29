@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getResources, getTraffic, reset } from "../../store/devices/system/systemSlice";
+import { getResources, getTraffic, reset } from "../../store/devices/system/system";
 import { Row, Col } from "react-bootstrap";
 import SystemTime from "../../components/system-time";
 import SystemCPU from "../../components/cpu";

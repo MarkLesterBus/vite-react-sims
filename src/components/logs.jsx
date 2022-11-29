@@ -6,7 +6,7 @@ import { FaServer, FaPlus, FaCogs, FaTrash, FaUsers } from "react-icons/fa";
 import {
     getLogs,
     reset,
-} from "../store/devices/system/systemSlice";
+} from "../store/devices/system/system";
 
 
 const SystemLogs = ({ uuid }) => {

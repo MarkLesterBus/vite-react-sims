@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Spinner } from "react-bootstrap";
-import { getSystem, reset } from "../../store/devices/system/systemSlice";
+import { getSystem, reset } from "../../store/devices/system/system";
 import SystemTime from "../../components/system-time";
 import SystemCPU from "../../components/cpu";
 
