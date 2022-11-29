@@ -149,7 +149,8 @@ const create_ports = async (token, uuid, data) => {
 
 
 const SystemService = {
-    system, resources, traffic, logs, interfaces, bridges, ports, vlans, create_vlans, create_bridges, create_ports
+    system, resources, traffic, logs, interfaces,
+    bridges, ports, vlans, create_vlans, create_bridges, create_ports
 }
 
 export default SystemService

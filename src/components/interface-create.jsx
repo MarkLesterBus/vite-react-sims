@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector, } from "react-redux";
 
 import { Col, Row, Dropdown, Button, Modal, Form, Spinner } from "react-bootstrap";
+import { createBridges } from "../store/devices/system/bridge";
 
 const CreateInterface = () => {
     const [showBridge, setShowBridge] = useState(false);
@@ -36,6 +37,7 @@ const CreateInterface = () => {
     const handleBridgeShow = () => setShowBridge(true);
     const handlePortShow = () => setShowPort(true);
     const handleVlanShow = () => setShowVlan(true);
+
     const dispatch = useDispatch();
 
 
@@ -45,12 +47,7 @@ const CreateInterface = () => {
     const { bridges, } = useSelector(
         (state) => state.bridges
     );
-    const { ports, } = useSelector(
-        (state) => state.ports
-    );
-    const { vlans, } = useSelector(
-        (state) => state.vlans
-    );
+
 
 
 
@@ -74,8 +71,14 @@ const CreateInterface = () => {
     };
 
 
-    const onBridgeSubmit = () => {
+    const onBridgeSubmit = (e) => {
+        e.preventDefault();
 
+        const bridgeData = {
+            bridge_name,
+        };
+
+        dispatch(createBridges(bridgeData));
     }
     const onVlanSubmit = () => {
 
