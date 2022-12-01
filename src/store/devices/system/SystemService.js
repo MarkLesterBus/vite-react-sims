@@ -109,13 +109,18 @@ const bridges = async (token, uuid) => {
     }
     return response.data
 }
-const create_bridges = async (token, uuid, data) => {
+const create_bridges = async (uuid, bridge, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
-    const response = await axios.post(url + `${uuid}/bridges`, data, config)
+    const response = await axios.post(url + `${uuid}/bridges`, bridge, config)
+    if (response.data) {
+        console.log(response.data)
+    } else {
+        console.log("Error")
+    }
     return response.data
 }
 
@@ -148,9 +153,80 @@ const create_ports = async (token, uuid, data) => {
 
 
 
+const addresses = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/ip/addresses`, config)
+    if (response.data) {
+        localStorage.setItem("addresses", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const create_addresses = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/ip/addresses`, data, config)
+
+    return response.data
+}
+const pool = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/ip/pool`, config)
+    if (response.data) {
+        localStorage.setItem("pools", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const create_pools = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/ip/pool`, data, config)
+
+    return response.data
+}
+const dns = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/ip/dns`, config)
+    if (response.data) {
+        localStorage.setItem("dns", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const update_dns = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/ip/dns`, data, config)
+
+    return response.data
+}
+
+
+
 const SystemService = {
     system, resources, traffic, logs, interfaces,
-    bridges, ports, vlans, create_vlans, create_bridges, create_ports
+    bridges, ports, vlans, create_vlans, create_bridges, create_ports,
+
+    addresses, pool, dns, create_addresses, create_pools, update_dns
 }
 
 export default SystemService

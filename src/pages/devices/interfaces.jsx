@@ -6,9 +6,10 @@ import { getBridges } from "../../store/devices/system/bridge";
 import { getPorts } from "../../store/devices/system/ports";
 import { getVlans } from "../../store/devices/system/vlan";
 import { useEffect } from "react";
+
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
-import { MdCheck, MdClose } from "react-icons/md";
+import { MdCheck, MdClose, MdDynamicFeed } from "react-icons/md";
 import CreateInterface from "../../components/interface-create";
 const Interfaces = () => {
 
@@ -24,6 +25,12 @@ const Interfaces = () => {
     );
     const { bridges, } = useSelector(
         (state) => state.bridges
+    );
+    const { ports, } = useSelector(
+        (state) => state.ports
+    );
+    const { vlans, } = useSelector(
+        (state) => state.vlans
     );
 
     useEffect(() => {
@@ -52,7 +59,7 @@ const Interfaces = () => {
         <>
             <section className="container">
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
-                    <h1 className="h2">Interfaces  {uuid} {isLoading ? (
+                    <h1 className="h2">Interfaces {isLoading ? (
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </Spinner>
@@ -187,16 +194,13 @@ const Interfaces = () => {
                         </Table>
                     </Tab>
                     <Tab eventKey="vlan" title="VLAN">
-                    </Tab>
-                    <Tab eventKey="port" title="Ports">
                         <Table className="mt-2" striped bordered hover>
                             <thead>
                                 <tr>
+                                    <th>VLAN ID </th>
                                     <th>Name</th>
-                                    <th>ARP</th>
                                     <th>Mac Address</th>
-                                    <th>Protocol</th>
-                                    <th>VLAN Filtering</th>
+                                    <th>Interface</th>
                                     <th>Running</th>
                                     <th>Disabled</th>
                                     <th>Actions</th>
@@ -204,36 +208,84 @@ const Interfaces = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(bridges).map((bridge, i) => (
+                                    Object.keys(vlans).map((vlan, i) => (
 
                                         <tr key={i}>
-                                            <td>{bridges[bridge]['name']}</td>
-                                            <td>{bridges[bridge]['arp'] == "enabled" ?
-                                                (<Badge bg="success">
-                                                    <MdCheck size={15} />
-                                                </Badge>) : (<Badge bg="danger">
-                                                    <MdClose size={15} />
-                                                </Badge>)}</td>
-                                            <td>{bridges[bridge]['mac-address']}</td>
-                                            <td>{bridges[bridge]['protocol-mode']}</td>
-                                            <td>{bridges[bridge]['vlan-filtering'] == "false" ?
-                                                (<Badge bg="danger">
-                                                    <MdClose size={15} />
-                                                </Badge>) : (<Badge bg="success">
-                                                    <MdCheck size={15} />
-                                                </Badge>)}</td>
-                                            <td>{bridges[bridge]['running'] == "true" ?
+                                            <td>{vlans[vlan]['vlan-id']}</td>
+                                            <td>{vlans[vlan]['name']}</td>
+                                            <td>{vlans[vlan]['mac-address']}</td>
+                                            <td>{vlans[vlan]['interface']}</td>
+                                            <td>{vlans[vlan]['running'] == "true" ?
                                                 (<Badge bg="success">
                                                     <FaPlay size={15} />
                                                 </Badge>) : (<Badge bg="danger">
                                                     <FaStop size={15} />
-                                                </Badge>)}</td>
-                                            <td>{bridges[bridge]['disabled'] == "false" ?
+                                                </Badge>)}
+                                            </td>
+                                            <td>{vlans[vlan]['disabled'] == "false" ?
                                                 (<Badge bg="success">
                                                     False
                                                 </Badge>) : (<Badge bg="danger">
                                                     Disabled
+                                                </Badge>)}
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <Button href="" variant="info" className="text-white" size="sm">
+                                                        <MdClose size={20} /> Disable
+                                                    </Button>{" "}
+
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    ))
+                                }
+
+                            </tbody>
+                        </Table>
+                    </Tab>
+                    <Tab eventKey="port" title="Ports">
+                        <Table className="mt-2" striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Port Number</th>
+                                    <th>Interface</th>
+                                    <th>Bridge</th>
+                                    <th>Status</th>
+                                    <th>Role</th>
+                                    <th>Dynamic</th>
+                                    <th>Disabled</th>
+                                    <th>Comment</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Object.keys(ports).map((port, i) => (
+
+                                        <tr key={i}>
+                                            <td>{ports[port]['port-number']}</td>
+                                            <td>{ports[port]['interface']}</td>
+                                            <td>{ports[port]['bridge']}</td>
+                                            <td>{ports[port]['status']}</td>
+                                            <td>{ports[port]['role']}</td>
+                                            <td>{ports[port]['dynamic'] == "false" ?
+                                                (<Badge bg="success">
+                                                    <MdCheck size={15} />
+                                                </Badge>) : (<Badge bg="danger">
+                                                    <MdClose size={15} />
                                                 </Badge>)}</td>
+
+                                            <td>{ports[port]['disabled'] == "false" ?
+                                                (<Badge bg="success">
+                                                    False
+                                                </Badge>) : (<Badge bg="danger">
+                                                    Disabled
+                                                </Badge>)}
+                                            </td>
+                                            <td>{ports[port]['comment']}</td>
+
 
                                             <td>
                                                 <div>

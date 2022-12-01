@@ -32,10 +32,10 @@ export const getPorts = createAsyncThunk(
 )
 export const createPorts = createAsyncThunk(
     'port/create',
-    async (uuid, data, thunkAPI) => {
+    async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.create_ports(token, uuid, data)
+            return await SystemService.create_ports(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&

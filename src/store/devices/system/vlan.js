@@ -32,10 +32,10 @@ export const getVlans = createAsyncThunk(
 )
 export const createVlans = createAsyncThunk(
     'vlan/create',
-    async (uuid, data, thunkAPI) => {
+    async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.create_vlans(token, uuid, data)
+            return await SystemService.create_vlans(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&

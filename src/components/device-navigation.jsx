@@ -8,7 +8,7 @@ import {
     FaWifi,
     FaTicketAlt,
 } from "react-icons/fa";
-import { MdQueue, MdList } from "react-icons/md";
+import { MdQueue, MdList, MdOutlet } from "react-icons/md";
 
 const DeviceNavigation = ({ uuid }) => {
 
@@ -56,7 +56,7 @@ const DeviceNavigation = ({ uuid }) => {
                                             : "nav-link text-white"
                                     }
                                 >
-                                    <FaNetworkWired
+                                    <MdOutlet
                                         className="bi d-block mx-auto mb-1"
                                         size={24}
                                     />
@@ -65,15 +65,16 @@ const DeviceNavigation = ({ uuid }) => {
                             </li>
                             <li>
                                 <NavLink
-                                    to={`hotspot`}
+                                    to={`ip`}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "nav-link text-secondary"
                                             : "nav-link text-white"
                                     }
                                 >
-                                    <FaWifi className="bi d-block mx-auto mb-1" size={24} />
-                                    Hotspot
+
+                                    <FaNetworkWired className="bi d-block mx-auto mb-1" size={24} />
+                                    IP
                                 </NavLink>
                             </li>
                             <li>

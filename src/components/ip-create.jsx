@@ -10,17 +10,12 @@ import { getInterfaces } from "../store/devices/system/interface";
 const CreateInterface = ({ uuid }) => {
     const [showBridge, setShowBridge] = useState(false);
     const [showVlan, setShowVlan] = useState(false);
-    const [showPort, setShowPort] = useState(false);
 
     const [bridge, setBridge] = useState({
         bridge_name: "",
     });
 
-    const [vlan, setVlan] = useState({
-        vlan_name: "",
-        vlan_interface: "",
-        vlan_id: "",
-    });
+
 
     const [port, setPort] = useState({
         port_interface: "",
@@ -30,7 +25,7 @@ const CreateInterface = ({ uuid }) => {
 
     const { bridge_name } = bridge;
     const { vlan_name, vlan_interface, vlan_id } = vlan;
-    const { port_interface, port_bridge } = port;
+
 
 
     const handleBridgeClose = () => setShowBridge(false);

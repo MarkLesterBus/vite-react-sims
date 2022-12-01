@@ -32,10 +32,10 @@ export const getBridges = createAsyncThunk(
 )
 export const createBridges = createAsyncThunk(
     'bridge/create',
-    async (uuid, data, thunkAPI) => {
+    async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.create_bridges(token, uuid, data)
+            return await SystemService.create_bridges(payload.uuid, payload.data, token)
         } catch (error) {
             const message =
                 (error.response &&
@@ -83,6 +83,7 @@ export const bridge = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.bridge = action.payload
+
             })
             .addCase(createBridges.rejected, (state, action) => {
                 state.isLoading = false

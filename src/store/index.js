@@ -6,6 +6,7 @@ import vlanReducer from './devices/system/vlan';
 import portReducer from './devices/system/ports';
 import bridgeReducer from './devices/system/bridge';
 import interfaceReducer from './devices/system/interface';
+import ipReducer from './devices/system/ip';
 
 export default configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export default configureStore({
     ports: portReducer,
     bridges: bridgeReducer,
     interfaces: interfaceReducer,
+    ip: ipReducer,
   },
 });
