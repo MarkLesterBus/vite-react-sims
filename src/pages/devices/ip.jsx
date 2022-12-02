@@ -6,6 +6,7 @@ import { FaCogs, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
 import { MdCheck, MdClose, MdDynamicFeed } from "react-icons/md";
 import { getAddresses, getPools, getDNS, reset } from "../../store/devices/system/ip";
 import { useEffect } from "react";
+import CreateIP from "../../components/ip-create";
 
 
 const IP = () => {
@@ -49,6 +50,7 @@ const IP = () => {
                         </Spinner>
                     ) : ""}</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
+                        <CreateIP uuid={uuid} />
                     </div>
                 </div>
                 <Tabs

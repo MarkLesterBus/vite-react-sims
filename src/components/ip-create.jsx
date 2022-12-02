@@ -2,39 +2,34 @@ import { useState } from "react";
 import { useDispatch, useSelector, } from "react-redux";
 
 import { Col, Row, Dropdown, Button, Modal, Form, Spinner } from "react-bootstrap";
-import { createBridges, getBridges } from "../store/devices/system/bridge";
-import { createVlans, getVlans } from "../store/devices/system/vlan";
-import { createPorts, getPorts } from "../store/devices/system/ports";
-import { getInterfaces } from "../store/devices/system/interface";
+import { createAddresses, getAddresses, createPools, getPools } from "../store/devices/system/ip";
 
-const CreateInterface = ({ uuid }) => {
-    const [showBridge, setShowBridge] = useState(false);
-    const [showVlan, setShowVlan] = useState(false);
+const CreateIP = ({ uuid }) => {
+    const [showAddress, setShowAddress] = useState(false);
+    const [showPool, setShowPool] = useState(false);
 
-    const [bridge, setBridge] = useState({
-        bridge_name: "",
+    const [addresses, setAddress] = useState({
+        address: "",
+        network: "",
+        _interface: "",
+    });
+    const [pools, setPools] = useState({
+        name: "",
+        ranges: "",
     });
 
 
 
-    const [port, setPort] = useState({
-        port_interface: "",
-        port_bridge: "",
-    });
+    const { address, network, _interface } = addresses;
+    const { name, ranges } = pools;
+
+    const handleAddressClose = () => setShowAddress(false);
+    const handlePoolClose = () => setShowPool(false);
 
 
-    const { bridge_name } = bridge;
-    const { vlan_name, vlan_interface, vlan_id } = vlan;
+    const handleAddresShow = () => setShowAddress(true);
+    const handlePoolShow = () => setShowPool(true);
 
-
-
-    const handleBridgeClose = () => setShowBridge(false);
-    const handlePortClose = () => setShowPort(false);
-    const handleVlanClose = () => setShowVlan(false);
-
-    const handleBridgeShow = () => setShowBridge(true);
-    const handlePortShow = () => setShowPort(true);
-    const handleVlanShow = () => setShowVlan(true);
 
     const dispatch = useDispatch();
 
@@ -42,120 +37,167 @@ const CreateInterface = ({ uuid }) => {
     const { interfaces, isLoading, isError, message } = useSelector(
         (state) => state.interfaces
     );
-    const { bridges, bridgeisLoading, bridgeisError, bridgemessage } = useSelector(
-        (state) => state.bridges
-    );
-    const { vlanisLoading, vlanisError, vlanmessage } = useSelector(
-        (state) => state.interfaces
-    );
-    const { portisLoading, portisError, portmessage } = useSelector(
-        (state) => state.interfaces
-    );
 
 
-
-
-
-    const onChangeBridge = (e) => {
-        setBridge((prevState) => ({
+    const onChangeAddress = (e) => {
+        setAddress((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
     };
-    const onChangeVlan = (e) => {
-        setVlan((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
-    const onChangePort = (e) => {
-        setPort((prevState) => ({
+    const onChangePool = (e) => {
+        setPools((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
     };
 
 
-    const onBridgeSubmit = (e) => {
+
+    const onAddressSubmit = (e) => {
         e.preventDefault();
 
         const payload = {
             uuid: uuid,
             data: {
-                name: bridge_name
+                address: address,
+                network: network,
+                interface: _interface
             }
         };
 
-        dispatch(createBridges(payload));
-        dispatch(getBridges(uuid));
+        dispatch(createAddresses(payload));
+        dispatch(getAddresses(uuid));
     }
-    const onVlanSubmit = (e) => {
+    const onPoolSubmit = (e) => {
         e.preventDefault();
 
         const payload = {
             uuid: uuid,
             data: {
-                'vlan-id': vlan_id,
-                name: vlan_name,
-                interface: vlan_interface
-            }
-        };
-        dispatch(createVlans(payload));
-        dispatch(getVlans(uuid));
-    }
-    const onPortSubmit = (e) => {
-        e.preventDefault();
-        const payload = {
-            uuid: uuid,
-            data: {
-                interface: port_interface,
-                bridge: port_bridge
+                name: name,
+                ranges: ranges,
             }
         };
 
-        dispatch(createPorts(payload));
-        dispatch(getPorts(uuid));
+        dispatch(createPools(payload));
+        dispatch(getPools(uuid));
     }
 
     return (
         <div className="btn-group me-2">
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Add Interface
+                    Add IP
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleBridgeShow} >Bridge</Dropdown.Item>
-                    <Dropdown.Item onClick={handleVlanShow} >VLAN</Dropdown.Item>
-                    <Dropdown.Item onClick={handlePortShow}>Port</Dropdown.Item>
+                    <Dropdown.Item onClick={handleAddresShow} >Addresses</Dropdown.Item>
+                    <Dropdown.Item onClick={handlePoolShow} >Pool</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
 
-            <Modal show={showBridge} onHide={handleBridgeClose}>
+            <Modal show={showAddress} onHide={handleAddressClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>New Bridge</Modal.Title>
+                    <Modal.Title>New Address</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={onBridgeSubmit}>
+                <Form onSubmit={onAddressSubmit}>
                     <Modal.Body>
                         <Form.Group className="mb-3">
                             <Form.Label>Name</Form.Label>
                             <Form.Control
-                                onChange={onChangeBridge}
-                                id="bridge_name"
-                                name="bridge_name"
-                                value={bridge_name}
+                                onChange={onChangeAddress}
+                                id="name"
+                                name="name"
+                                value={name}
+                                type="text"
+                                placeholder="Address"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Ranges</Form.Label>
+                            <Form.Control
+                                onChange={onChangeAddress}
+                                id="ranges"
+                                name="ranges"
+                                value={ranges}
+                                type="text"
+                                placeholder="Ranges"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Interface</Form.Label>
+                            <Form.Select onChange={onChangeAddress}
+                                id="interface"
+                                name="_interface"
+                                value={_interface}
+                            >
+                                {
+                                    Object.keys(interfaces).map((iface, i) => (
+                                        <option key={i}>{interfaces[iface]['name']}</option>
+                                    ))
+                                }
+                            </Form.Select>
+
+                        </Form.Group>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleAddressClose}>
+                            Close
+                        </Button>
+                        <Button type="submit" disabled={isLoading} variant="primary">
+                            {isLoading ? (
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                "Save Address"
+                            )}
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
+            <Modal show={showPool} onHide={handlePoolClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>New Pool</Modal.Title>
+                </Modal.Header>
+                <Form onSubmit={onPoolSubmit}>
+                    <Modal.Body>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                onChange={onChangePool}
+                                id="name"
+                                name="name"
+                                value={name}
                                 type="text"
                                 placeholder="Name"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Ranges</Form.Label>
+                            <Form.Control
+                                onChange={onChangePool}
+                                id="ranges"
+                                name="ranges"
+                                value={ranges}
+                                type="text"
+                                placeholder="0.0.0.0,1.1.1.1"
                             />
                         </Form.Group>
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleBridgeClose}>
+                        <Button variant="secondary" onClick={handlePoolClose}>
                             Close
                         </Button>
-                        <Button type="submit" disabled={bridgeisLoading} variant="primary">
-                            {bridgeisLoading ? (
+                        <Button type="submit" disabled={isLoading} variant="primary">
+                            {isLoading ? (
                                 <Spinner
                                     as="span"
                                     animation="border"
@@ -164,152 +206,16 @@ const CreateInterface = ({ uuid }) => {
                                     aria-hidden="true"
                                 />
                             ) : (
-                                "Save Device"
+                                "Save Pool"
                             )}
                         </Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
-            <Modal show={showVlan} onHide={handleVlanClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>New VLAN</Modal.Title>
-                </Modal.Header>
-                <Form onSubmit={onVlanSubmit}>
-                    <Modal.Body>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control
-                                onChange={onChangeVlan}
-                                id="vlan_name"
-                                name="vlan_name"
-                                value={vlan_name}
-                                type="text"
-                                placeholder="Name"
-                            />
-                        </Form.Group>
 
-                        <Row>
-                            <Col sm={8}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Interface</Form.Label>
-                                    <Form.Select onChange={onChangeVlan}
-                                        id="vlan_interface"
-                                        name="vlan_interface"
-                                        value={vlan_interface}
-                                    >
-                                        {
-                                            Object.keys(interfaces).map((iface, i) => (
-                                                <option key={i}>{interfaces[iface]['name']}</option>
-                                            ))
-                                        }
-                                    </Form.Select>
-
-                                </Form.Group>
-                            </Col>
-                            <Col sm={4}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>VLAN ID</Form.Label>
-
-                                    <Form.Control
-                                        onChange={onChangeVlan}
-                                        id="vlan_id"
-                                        name="vlan_id"
-                                        value={vlan_id}
-                                        type="text"
-                                        placeholder="VLAN ID"
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleVlanClose}>
-                            Close
-                        </Button>
-                        <Button type="submit" disabled={vlanisLoading} variant="primary">
-                            {vlanisLoading ? (
-                                <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                />
-                            ) : (
-                                "Save Device"
-                            )}
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
-            <Modal show={showPort} onHide={handlePortClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>New Port</Modal.Title>
-                </Modal.Header>
-                <Form onSubmit={onPortSubmit}>
-                    <Modal.Body>
-                        <Row>
-                            <Col sm={8}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Interface</Form.Label>
-                                    <Form.Select onChange={onChangePort}
-                                        id="port_interface"
-                                        name="port_interface"
-                                        value={port_interface}
-                                    >
-                                        {
-                                            Object.keys(interfaces).map((iface, i) => (
-                                                <option key={i}>{interfaces[iface]['name']}</option>
-                                            ))
-                                        }
-                                    </Form.Select>
-
-                                </Form.Group>
-                            </Col>
-                            <Col sm={4}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>bridge_name</Form.Label>
-                                    <Form.Select onChange={onChangePort}
-                                        id="port_bridge"
-                                        name="port_bridge"
-                                        value={port_bridge}
-                                    >
-                                        {
-                                            Object.keys(bridges).map((bridge, i) => (
-                                                <option key={i}>{bridges[bridge]['name']}</option>
-                                            ))
-                                        }
-                                    </Form.Select>
-
-                                </Form.Group>
-                            </Col>
-                        </Row>
-
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handlePortClose}>
-                            Close
-                        </Button>
-                        <Button type="submit" disabled={portisLoading} variant="primary">
-                            {portisLoading ? (
-                                <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                />
-                            ) : (
-                                "Save Device"
-                            )}
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
         </div>
     );
 
 }
 
-export default CreateInterface;
+export default CreateIP;

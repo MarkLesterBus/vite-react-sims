@@ -54,6 +54,8 @@ const logs = async (token, uuid) => {
     }
     return response.data
 }
+
+
 const interfaces = async (token, uuid) => {
     const config = {
         headers: {
@@ -62,8 +64,36 @@ const interfaces = async (token, uuid) => {
     }
     const response = await axios.get(url + `${uuid}/interfaces`, config)
     if (response.data) {
+        console.log(response.data)
         localStorage.setItem("interfaces", JSON.stringify(response.data));
     }
+    return response.data
+}
+const remove_interfaces = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/interfaces/${id}`, config)
+    return response.data
+}
+const change_disable_interfaces = async (token, uuid, payload) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.put(url + `${uuid}/interfaces/${payload.id}/disabled`, payload.data, config)
+    return response.data
+}
+const change_running_interfaces = async (token, uuid, payload) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.put(url + `${uuid}/interfaces/${payload.id}/running`, payload.data, config)
     return response.data
 }
 
@@ -175,6 +205,7 @@ const create_addresses = async (token, uuid, data) => {
 
     return response.data
 }
+
 const pool = async (token, uuid) => {
     const config = {
         headers: {
@@ -226,7 +257,9 @@ const SystemService = {
     system, resources, traffic, logs, interfaces,
     bridges, ports, vlans, create_vlans, create_bridges, create_ports,
 
-    addresses, pool, dns, create_addresses, create_pools, update_dns
+    addresses, pool, dns, create_addresses, create_pools, update_dns,
+
+    remove_interfaces, change_disable_interfaces, change_running_interfaces
 }
 
 export default SystemService

@@ -30,6 +30,25 @@ export const getInterfaces = createAsyncThunk(
         }
     }
 )
+export const removeInterfaces = createAsyncThunk(
+    'interface/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            console.log(payload.id)
+            return await SystemService.remove_interfaces(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 
 export const _interface = createSlice({
     name: 'interface',
@@ -55,6 +74,21 @@ export const _interface = createSlice({
                 state.interfaces = action.payload
             })
             .addCase(getInterfaces.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removeInterfaces.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeInterfaces.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                // state.interfaces = state.interfaces.filter(
+                //     (intface) => intface.id !== action.payload.id
+                // )
+            })
+            .addCase(removeInterfaces.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

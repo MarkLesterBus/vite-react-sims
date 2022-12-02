@@ -1,15 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { reset } from "../../store/devices/system/system";
-import { getInterfaces } from "../../store/devices/system/interface";
+import { getInterfaces, removeInterfaces } from "../../store/devices/system/interface";
 import { getBridges } from "../../store/devices/system/bridge";
 import { getPorts } from "../../store/devices/system/ports";
 import { getVlans } from "../../store/devices/system/vlan";
 import { useEffect } from "react";
 
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
-import { FaCogs, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
-import { MdCheck, MdClose, MdDynamicFeed } from "react-icons/md";
+import { FaCogs, FaDoorClosed, FaPlay, FaStop, FaTrash } from "react-icons/fa";
+import { MdCheck, MdCheckCircle, MdClose, MdDynamicFeed } from "react-icons/md";
 import CreateInterface from "../../components/interface-create";
 const Interfaces = () => {
 
@@ -33,6 +33,11 @@ const Interfaces = () => {
         (state) => state.vlans
     );
 
+    const onRemoveInterface = (id) => {
+        dispatch(removeInterfaces(id))
+
+    }
+
     useEffect(() => {
         if (isError) {
             console.log(message);
@@ -52,6 +57,7 @@ const Interfaces = () => {
             dispatch(reset());
         };
     }, [dispatch]);
+
 
 
 
@@ -92,39 +98,64 @@ const Interfaces = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(interfaces).map((iface, index) => (
+                                    Object.keys(interfaces).map((iface, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{interfaces[iface].name}</td>
+                                                <td>{interfaces[iface]['default-name']}</td>
+                                                <td>{interfaces[iface]['type']}</td>
+                                                <td>{interfaces[iface]['mac-address']}</td>
+                                                <td>{interfaces[iface]['tx-byte']}</td>
+                                                <td>{interfaces[iface]['rx-byte']}</td>
+                                                <td>{interfaces[iface]['running'] == "true" ?
+                                                    (<Badge bg="success">
+                                                        <FaPlay size={15} />
+                                                    </Badge>) : (<Badge bg="danger">
+                                                        <FaStop size={15} />
+                                                    </Badge>)}</td>
+                                                <td>{interfaces[iface]['disabled'] == "false" ?
+                                                    (<Badge bg="success">
+                                                        Enabled
+                                                    </Badge>) : (<Badge bg="warning">
+                                                        Disabled
+                                                    </Badge>)}</td>
+                                                <td>{interfaces[iface]['last-link-up-time']}</td>
+                                                <td>
+                                                    <div>
+                                                        {interfaces[iface]['disabled'] == "false" ?
+                                                            (<Button href="" variant="warning" size="sm">
+                                                                <MdClose /> Disable
+                                                            </Button>)
+                                                            : (<Button href="" variant="info" size="sm">
+                                                                <MdCheckCircle /> Enable
+                                                            </Button>)}{" "}
+                                                        {interfaces[iface]['running'] == "true" ?
+                                                            (<Button href="" variant="secondary" size="sm">
+                                                                <FaStop /> Stop
+                                                            </Button>)
+                                                            : (<Button href="" variant="success" size="sm">
+                                                                <FaPlay /> Start
+                                                            </Button>)
+                                                        }
+                                                        <Button onClick={() => {
+                                                            // console.log(interfaces[iface]['.id'])s
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: interfaces[iface]['.id']
+                                                            }
+                                                            dispatch(removeInterfaces(payload))
+                                                            dispatch(getInterfaces(uuid))
 
-                                        <tr key={index}>
-                                            <td>{interfaces[iface].name}</td>
-                                            <td>{interfaces[iface]['default-name']}</td>
-                                            <td>{interfaces[iface]['type']}</td>
-                                            <td>{interfaces[iface]['mac-address']}</td>
-                                            <td>{interfaces[iface]['tx-byte']}</td>
-                                            <td>{interfaces[iface]['rx-byte']}</td>
-                                            <td>{interfaces[iface]['running'] == "true" ?
-                                                (<Badge bg="success">
-                                                    <FaPlay size={15} />
-                                                </Badge>) : (<Badge bg="danger">
-                                                    <FaStop size={15} />
-                                                </Badge>)}</td>
-                                            <td>{interfaces[iface]['disabled'] == "false" ?
-                                                (<Badge bg="success">
-                                                    Enabled
-                                                </Badge>) : (<Badge bg="warning">
-                                                    Disabled
-                                                </Badge>)}</td>
-                                            <td>{interfaces[iface]['last-link-up-time']}</td>
-                                            <td>
-                                                <div>
-                                                    <Button href="" variant="info" size="sm">
-                                                        <FaDoorClosed /> Disable
-                                                    </Button>{" "}
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )
+                                    })
                                 }
 
                             </tbody>

@@ -5,7 +5,6 @@ import { Col, Row, Dropdown, Button, Modal, Form, Spinner } from "react-bootstra
 import { createBridges, getBridges } from "../store/devices/system/bridge";
 import { createVlans, getVlans } from "../store/devices/system/vlan";
 import { createPorts, getPorts } from "../store/devices/system/ports";
-import { getInterfaces } from "../store/devices/system/interface";
 
 const CreateInterface = ({ uuid }) => {
     const [showBridge, setShowBridge] = useState(false);

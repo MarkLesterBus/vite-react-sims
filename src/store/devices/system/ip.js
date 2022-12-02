@@ -74,7 +74,7 @@ export const createAddresses = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.create_addresses(payload.uuid, payload.data, token)
+            return await SystemService.create_addresses(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&
@@ -91,7 +91,7 @@ export const createPools = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.create_pools(payload.uuid, payload.data, token)
+            return await SystemService.create_pools(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&
@@ -108,7 +108,7 @@ export const updateDNS = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.update_dns(payload.uuid, payload.data, token)
+            return await SystemService.update_dns(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&
@@ -178,20 +178,19 @@ export const ip = createSlice({
                 state.message = action.payload
             })
 
-        // .addCase(createBridges.pending, (state) => {
-        //     state.isLoading = true
-        // })
-        // .addCase(createBridges.fulfilled, (state, action) => {
-        //     state.isLoading = false
-        //     state.isSuccess = true
-        //     state.bridge = action.payload
+            .addCase(createAddresses.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createAddresses.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
 
-        // })
-        // .addCase(createBridges.rejected, (state, action) => {
-        //     state.isLoading = false
-        //     state.isError = true
-        //     state.message = action.payload
-        // })
+            })
+            .addCase(createAddresses.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
 
     },
 })
