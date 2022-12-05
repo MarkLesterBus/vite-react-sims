@@ -1,16 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { reset } from "../../store/devices/system/system";
-import { getInterfaces, removeInterfaces } from "../../store/devices/system/interface";
-import { getBridges } from "../../store/devices/system/bridge";
-import { getPorts } from "../../store/devices/system/ports";
-import { getVlans } from "../../store/devices/system/vlan";
+import { getInterfaces } from "../../store/devices/system/interface";
+import { getBridges, removeBridges } from "../../store/devices/system/bridge";
+import { getPorts, removePorts } from "../../store/devices/system/ports";
+import { getVlans, removeVlans } from "../../store/devices/system/vlan";
 import { useEffect } from "react";
 
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed, FaPlay, FaStop, FaTrash } from "react-icons/fa";
 import { MdCheck, MdCheckCircle, MdClose, MdDynamicFeed } from "react-icons/md";
 import CreateInterface from "../../components/interface-create";
+import { removeAddresses } from "../../store/devices/system/ip";
 const Interfaces = () => {
 
 
@@ -33,10 +34,7 @@ const Interfaces = () => {
         (state) => state.vlans
     );
 
-    const onRemoveInterface = (id) => {
-        dispatch(removeInterfaces(id))
 
-    }
 
     useEffect(() => {
         if (isError) {
@@ -93,7 +91,6 @@ const Interfaces = () => {
                                     <th>Running</th>
                                     <th>Disabled</th>
                                     <th>Last Link-up Time</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,38 +117,7 @@ const Interfaces = () => {
                                                         Disabled
                                                     </Badge>)}</td>
                                                 <td>{interfaces[iface]['last-link-up-time']}</td>
-                                                <td>
-                                                    <div>
-                                                        {interfaces[iface]['disabled'] == "false" ?
-                                                            (<Button href="" variant="warning" size="sm">
-                                                                <MdClose /> Disable
-                                                            </Button>)
-                                                            : (<Button href="" variant="info" size="sm">
-                                                                <MdCheckCircle /> Enable
-                                                            </Button>)}{" "}
-                                                        {interfaces[iface]['running'] == "true" ?
-                                                            (<Button href="" variant="secondary" size="sm">
-                                                                <FaStop /> Stop
-                                                            </Button>)
-                                                            : (<Button href="" variant="success" size="sm">
-                                                                <FaPlay /> Start
-                                                            </Button>)
-                                                        }
-                                                        <Button onClick={() => {
-                                                            // console.log(interfaces[iface]['.id'])s
-                                                            const payload = {
-                                                                uuid: uuid,
-                                                                id: interfaces[iface]['.id']
-                                                            }
-                                                            dispatch(removeInterfaces(payload))
-                                                            dispatch(getInterfaces(uuid))
 
-                                                        }} variant="danger" size="sm">
-                                                            <FaTrash /> Delete
-                                                        </Button>
-
-                                                    </div>
-                                                </td>
                                             </tr>
 
                                         )
@@ -210,9 +176,19 @@ const Interfaces = () => {
 
                                             <td>
                                                 <div>
-                                                    <Button href="" variant="info" className="text-white" size="sm">
-                                                        <MdClose size={20} /> Disable
-                                                    </Button>{" "}
+
+                                                    <Button onClick={() => {
+                                                        // console.log(interfaces[iface]['.id'])s
+                                                        const payload = {
+                                                            uuid: uuid,
+                                                            id: bridges[bridge]['.id']
+                                                        }
+                                                        dispatch(removeBridges(payload))
+                                                        dispatch(getBridges(uuid))
+
+                                                    }} variant="danger" size="sm">
+                                                        <FaTrash /> Delete
+                                                    </Button>
 
                                                 </div>
                                             </td>
@@ -262,9 +238,18 @@ const Interfaces = () => {
                                             </td>
                                             <td>
                                                 <div>
-                                                    <Button href="" variant="info" className="text-white" size="sm">
-                                                        <MdClose size={20} /> Disable
-                                                    </Button>{" "}
+
+                                                    <Button onClick={() => {
+                                                        const payload = {
+                                                            uuid: uuid,
+                                                            id: vlans[vlan]['.id']
+                                                        }
+                                                        dispatch(removeVlans(payload))
+                                                        dispatch(getVlans(uuid))
+
+                                                    }} variant="danger" size="sm">
+                                                        <FaTrash /> Delete
+                                                    </Button>
 
                                                 </div>
                                             </td>
@@ -316,16 +301,26 @@ const Interfaces = () => {
                                                 </Badge>)}
                                             </td>
                                             <td>{ports[port]['comment']}</td>
-
-
                                             <td>
                                                 <div>
-                                                    <Button href="" variant="info" className="text-white" size="sm">
-                                                        <MdClose size={20} /> Disable
-                                                    </Button>{" "}
+
+                                                    <Button onClick={() => {
+                                                        const payload = {
+                                                            uuid: uuid,
+                                                            id: ports[port]['.id']
+                                                        }
+                                                        console.log(ports[port]['.id'])
+                                                        dispatch(removePorts(payload))
+                                                        dispatch(getPorts(uuid))
+
+                                                    }} variant="danger" size="sm">
+                                                        <FaTrash /> Delete
+                                                    </Button>
 
                                                 </div>
                                             </td>
+
+
                                         </tr>
 
                                     ))

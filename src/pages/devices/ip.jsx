@@ -2,9 +2,9 @@ import DeviceNavigation from "../../components/device-navigation";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
-import { FaCogs, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
+import { FaCogs, FaTrash, FaDoorClosed, FaPlay, FaStop } from "react-icons/fa";
 import { MdCheck, MdClose, MdDynamicFeed } from "react-icons/md";
-import { getAddresses, getPools, getDNS, reset } from "../../store/devices/system/ip";
+import { getAddresses, getPools, getDNS, reset, removeAddresses, removePools } from "../../store/devices/system/ip";
 import { useEffect } from "react";
 import CreateIP from "../../components/ip-create";
 
@@ -95,9 +95,18 @@ const IP = () => {
                                             <td>{addresses[address]['commnet']}</td>
                                             <td>
                                                 <div>
-                                                    <Button href="" variant="info" size="sm">
-                                                        <FaDoorClosed /> Disable
-                                                    </Button>{" "}
+
+                                                    <Button onClick={() => {
+                                                        const payload = {
+                                                            uuid: uuid,
+                                                            id: addresses[address]['.id']
+                                                        }
+                                                        dispatch(removeAddresses(payload))
+                                                        dispatch(getAddresses(uuid))
+
+                                                    }} variant="danger" size="sm">
+                                                        <FaTrash /> Delete
+                                                    </Button>
 
                                                 </div>
                                             </td>
@@ -128,9 +137,18 @@ const IP = () => {
                                             <td>{pools[pool]['ranges']}</td>
                                             <td>
                                                 <div>
-                                                    <Button href="" variant="info" size="sm">
-                                                        <FaDoorClosed /> Disable
-                                                    </Button>{" "}
+
+                                                    <Button onClick={() => {
+                                                        const payload = {
+                                                            uuid: uuid,
+                                                            id: pools[pool]['.id']
+                                                        }
+                                                        dispatch(removePools(payload))
+                                                        dispatch(getPools(uuid))
+
+                                                    }} variant="danger" size="sm">
+                                                        <FaTrash /> Delete
+                                                    </Button>
 
                                                 </div>
                                             </td>

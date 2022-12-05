@@ -64,36 +64,8 @@ const interfaces = async (token, uuid) => {
     }
     const response = await axios.get(url + `${uuid}/interfaces`, config)
     if (response.data) {
-        console.log(response.data)
         localStorage.setItem("interfaces", JSON.stringify(response.data));
     }
-    return response.data
-}
-const remove_interfaces = async (token, uuid, id) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }
-    const response = await axios.delete(url + `${uuid}/interfaces/${id}`, config)
-    return response.data
-}
-const change_disable_interfaces = async (token, uuid, payload) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }
-    const response = await axios.put(url + `${uuid}/interfaces/${payload.id}/disabled`, payload.data, config)
-    return response.data
-}
-const change_running_interfaces = async (token, uuid, payload) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }
-    const response = await axios.put(url + `${uuid}/interfaces/${payload.id}/running`, payload.data, config)
     return response.data
 }
 
@@ -121,6 +93,16 @@ const create_vlans = async (token, uuid, data) => {
     const response = await axios.post(url + `${uuid}/vlans`, data, config)
     return response.data
 }
+const remove_vlans = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/vlans/${id}`, config)
+    return response.data
+}
+
 
 
 
@@ -153,6 +135,15 @@ const create_bridges = async (uuid, bridge, token) => {
     }
     return response.data
 }
+const remove_bridges = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/bridges/${id}`, config)
+    return response.data
+}
 
 
 
@@ -180,6 +171,16 @@ const create_ports = async (token, uuid, data) => {
 
     return response.data
 }
+const remove_ports = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/ports/${id}`, config)
+    return response.data
+}
+
 
 
 
@@ -205,6 +206,17 @@ const create_addresses = async (token, uuid, data) => {
 
     return response.data
 }
+const remove_address = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/ip/addresses/${id}`, config)
+    return response.data
+}
+
+
 
 const pool = async (token, uuid) => {
     const config = {
@@ -228,6 +240,18 @@ const create_pools = async (token, uuid, data) => {
 
     return response.data
 }
+const remove_pools = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/ip/pool/${id}`, config)
+    return response.data
+}
+
+
+
 const dns = async (token, uuid) => {
     const config = {
         headers: {
@@ -252,14 +276,40 @@ const update_dns = async (token, uuid, data) => {
 }
 
 
+const hotspots = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/hotspot`, config)
+    if (response.data) {
+        localStorage.setItem("hotspots", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const hotspot_profiles = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/hotspot/profiles`, config)
+    if (response.data) {
+        localStorage.setItem("hotspot_profiles", JSON.stringify(response.data));
+    }
+    return response.data
+}
+
+
 
 const SystemService = {
     system, resources, traffic, logs, interfaces,
-    bridges, ports, vlans, create_vlans, create_bridges, create_ports,
+    bridges, ports, vlans, create_vlans, create_bridges, create_ports, remove_bridges,
 
     addresses, pool, dns, create_addresses, create_pools, update_dns,
 
-    remove_interfaces, change_disable_interfaces, change_running_interfaces
+    remove_address, remove_bridges, remove_ports, remove_vlans, remove_pools, hotspots, hotspot_profiles
 }
 
 export default SystemService

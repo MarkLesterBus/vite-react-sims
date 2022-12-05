@@ -40,6 +40,7 @@ function App() {
           <Route exact path="dashboard" element={<Dashboard />} />
           <Route exact path="interfaces" element={<Interfaces />} />
           <Route exact path="ip" element={<IP />} />
+          <Route exact path="hotspot" element={<Hotspot />} />
           <Route exact path="queues" element={<Queues />} />
           <Route exact path="vouchers" element={<Vouchers />} />
           <Route exact path="logs" element={<Logs />} />

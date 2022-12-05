@@ -99,7 +99,7 @@ const CreateInterface = ({ uuid }) => {
         const payload = {
             uuid: uuid,
             data: {
-                'vlan-id': vlan_id,
+                vlan_id: vlan_id,
                 name: vlan_name,
                 interface: vlan_interface
             }

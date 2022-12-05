@@ -107,9 +107,9 @@ const CreateIP = ({ uuid }) => {
                             <Form.Label>Name</Form.Label>
                             <Form.Control
                                 onChange={onChangeAddress}
-                                id="name"
-                                name="name"
-                                value={name}
+                                id="address"
+                                name="address"
+                                value={address}
                                 type="text"
                                 placeholder="Address"
                             />
@@ -118,11 +118,11 @@ const CreateIP = ({ uuid }) => {
                             <Form.Label>Ranges</Form.Label>
                             <Form.Control
                                 onChange={onChangeAddress}
-                                id="ranges"
-                                name="ranges"
-                                value={ranges}
+                                id="network"
+                                name="network"
+                                value={network}
                                 type="text"
-                                placeholder="Ranges"
+                                placeholder="Network"
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">

@@ -79,6 +79,20 @@ const DeviceNavigation = ({ uuid }) => {
                             </li>
                             <li>
                                 <NavLink
+                                    to={`hotspot`}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "nav-link text-secondary"
+                                            : "nav-link text-white"
+                                    }
+                                >
+
+                                    <FaWifi className="bi d-block mx-auto mb-1" size={24} />
+                                    Hotspot
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
                                     to={`queues`}
                                     className={({ isActive }) =>
                                         isActive

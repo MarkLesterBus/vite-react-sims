@@ -47,6 +47,23 @@ export const createBridges = createAsyncThunk(
         }
     }
 )
+export const removeBridges = createAsyncThunk(
+    'bridge/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_bridges(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 export const bridge = createSlice({
     name: 'bridge',
@@ -86,6 +103,19 @@ export const bridge = createSlice({
 
             })
             .addCase(createBridges.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removeBridges.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeBridges.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+
+            })
+            .addCase(removeBridges.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

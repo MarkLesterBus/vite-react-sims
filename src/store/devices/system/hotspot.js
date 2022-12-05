@@ -1,24 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const interfaces = JSON.parse(localStorage.getItem("interfaces"));
+const hotspots = JSON.parse(localStorage.getItem("hotspots"));
+const hotspot_profiles = JSON.parse(localStorage.getItem("hotspot_profiles"));
 
 const initialState = {
 
-    interfaces: interfaces ? interfaces : null,
-    intface: {},
+    hotspots: hotspots ? hotspots : null,
+    hotspot_profiles: hotspot_profiles ? hotspot_profiles : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
 }
 
-export const getInterfaces = createAsyncThunk(
-    'interface/get',
+export const getHotspot = createAsyncThunk(
+    'hotspot/get',
     async (uuid, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.interfaces(token, uuid)
+            return await SystemService.hotspots(token, uuid)
         } catch (error) {
             const message =
                 (error.response &&
@@ -30,12 +31,12 @@ export const getInterfaces = createAsyncThunk(
         }
     }
 )
-export const changeDisabledInterfaces = createAsyncThunk(
-    'interface/disabled/update',
-    async (payload, thunkAPI) => {
+export const getHotspotProfiles = createAsyncThunk(
+    'hotspot/profile/get',
+    async (uuid, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.change_disable_interfaces(token, payload.uuid, payload.id, payload.data)
+            return await SystemService.hotspot_profiles(token, uuid)
         } catch (error) {
             const message =
                 (error.response &&
@@ -48,26 +49,8 @@ export const changeDisabledInterfaces = createAsyncThunk(
     }
 )
 
-export const changeRunningInterfaces = createAsyncThunk(
-    'interface/running/update',
-    async (payload, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.change_running_interfaces(token, payload.uuid, payload.id, payload.data)
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString()
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
-
-export const _interface = createSlice({
-    name: 'interface',
+export const _hotspot = createSlice({
+    name: 'hotspot',
     initialState,
     reducers: {
         reset: (state) => {
@@ -81,15 +64,28 @@ export const _interface = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getInterfaces.pending, (state) => {
+            .addCase(getHotspot.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getInterfaces.fulfilled, (state, action) => {
+            .addCase(getHotspot.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.interfaces = action.payload
+                state.hotspots = action.payload
             })
-            .addCase(getInterfaces.rejected, (state, action) => {
+            .addCase(getHotspot.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getHotspotProfiles.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getHotspotProfiles.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.hotspot_profiles = action.payload
+            })
+            .addCase(getHotspotProfiles.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
@@ -101,5 +97,5 @@ export const _interface = createSlice({
     },
 })
 
-export const { reset } = _interface.actions
-export default _interface.reducer
+export const { reset } = _hotspot.actions
+export default _hotspot.reducer

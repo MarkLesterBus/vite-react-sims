@@ -47,6 +47,23 @@ export const createPorts = createAsyncThunk(
         }
     }
 )
+export const removePorts = createAsyncThunk(
+    'port/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_ports(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 export const port = createSlice({
     name: 'port',
@@ -86,6 +103,19 @@ export const port = createSlice({
                 state.port = action.payload
             })
             .addCase(createPorts.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removePorts.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removePorts.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.port = action.payload
+            })
+            .addCase(removePorts.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

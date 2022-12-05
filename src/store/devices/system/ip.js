@@ -86,6 +86,26 @@ export const createAddresses = createAsyncThunk(
         }
     }
 )
+export const removeAddresses = createAsyncThunk(
+    'addresses/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_address(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+
+
 export const createPools = createAsyncThunk(
     'pools/create',
     async (payload, thunkAPI) => {
@@ -103,6 +123,24 @@ export const createPools = createAsyncThunk(
         }
     }
 )
+export const removePools = createAsyncThunk(
+    'pools/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_pools(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 export const updateDNS = createAsyncThunk(
     'dns/create',
     async (payload, thunkAPI) => {
@@ -120,6 +158,7 @@ export const updateDNS = createAsyncThunk(
         }
     }
 )
+
 
 export const ip = createSlice({
     name: 'ip',
@@ -187,6 +226,32 @@ export const ip = createSlice({
 
             })
             .addCase(createAddresses.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removeAddresses.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeAddresses.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+
+            })
+            .addCase(removeAddresses.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removePools.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removePools.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+
+            })
+            .addCase(removePools.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
