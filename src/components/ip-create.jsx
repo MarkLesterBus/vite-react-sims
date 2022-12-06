@@ -34,8 +34,11 @@ const CreateIP = ({ uuid }) => {
     const dispatch = useDispatch();
 
 
-    const { interfaces, isLoading, isError, message } = useSelector(
+    const { interfaces, } = useSelector(
         (state) => state.interfaces
+    );
+    const { isLoading, isError, message } = useSelector(
+        (state) => state.ip
     );
 
 
@@ -104,7 +107,7 @@ const CreateIP = ({ uuid }) => {
                 <Form onSubmit={onAddressSubmit}>
                     <Modal.Body>
                         <Form.Group className="mb-3">
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>Address</Form.Label>
                             <Form.Control
                                 onChange={onChangeAddress}
                                 id="address"
@@ -115,7 +118,7 @@ const CreateIP = ({ uuid }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Ranges</Form.Label>
+                            <Form.Label>Netrok</Form.Label>
                             <Form.Control
                                 onChange={onChangeAddress}
                                 id="network"

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
-import { getHotspot, getHotspotProfiles, reset } from "../../store/devices/system/hotspot";
+import { getHotspot, getHotspotProfiles, removeHotspot, removeHotspotProfile, reset } from "../../store/devices/system/hotspot";
 import { FaTrash } from "react-icons/fa";
 import { useEffect } from "react";
 import CreateHotspot from "../../components/hotspot-create";
@@ -12,10 +12,10 @@ const Hotspot = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { user, token, isLoading, isError, isSuccess, message } = useSelector(
+    const { user, token } = useSelector(
         (state) => state.auth
     );
-    const { hotspots, hotspot_profiles } = useSelector(
+    const { hotspots, hotspot_profiles, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.hotspot
     );
 
@@ -64,6 +64,7 @@ const Hotspot = () => {
                                     <th>Pool</th>
                                     <th>Profile</th>
                                     <th>Address per Mac</th>
+                                    <th>IP of DNS Name</th>
                                     <th>HTTPS</th>
                                     <th>Disabled</th>
                                     <th>Actions</th>
@@ -79,6 +80,7 @@ const Hotspot = () => {
                                             <td>{hotspots[hs]['address-pool']}</td>
                                             <td>{hotspots[hs]['profile']}</td>
                                             <td>{hotspots[hs]['addresses-per-mac']}</td>
+                                            <td>{hotspots[hs]['ip-of-dns-name']}</td>
                                             <td>{hotspots[hs]['HTTPS']}</td>
 
                                             <td>{hotspots[hs]['disabled'] == "false" ?
@@ -95,8 +97,8 @@ const Hotspot = () => {
                                                             uuid: uuid,
                                                             id: hotspots[hs]['.id']
                                                         }
-                                                        dispatch(removeAddresses(payload))
-                                                        dispatch(getAddresses(uuid))
+                                                        dispatch(removeHotspot(payload))
+                                                        dispatch(getHotspot(uuid))
 
                                                     }} variant="danger" size="sm">
                                                         <FaTrash /> Delete
@@ -142,10 +144,10 @@ const Hotspot = () => {
                                                     <Button onClick={() => {
                                                         const payload = {
                                                             uuid: uuid,
-                                                            id: pools[pool]['.id']
+                                                            id: hotspot_profiles[profile]['.id']
                                                         }
-                                                        dispatch(removePools(payload))
-                                                        dispatch(getPools(uuid))
+                                                        dispatch(removeHotspotProfile(payload))
+                                                        dispatch(getHotspotProfiles(uuid))
 
                                                     }} variant="danger" size="sm">
                                                         <FaTrash /> Delete

@@ -31,6 +31,43 @@ export const getHotspot = createAsyncThunk(
         }
     }
 )
+
+export const createHotspot = createAsyncThunk(
+    'hotspot/create',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.create_hotspot(token, payload.uuid, payload.data)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+export const removeHotspot = createAsyncThunk(
+    'hotspot/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_hotspot(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+
 export const getHotspotProfiles = createAsyncThunk(
     'hotspot/profile/get',
     async (uuid, thunkAPI) => {
@@ -48,6 +85,42 @@ export const getHotspotProfiles = createAsyncThunk(
         }
     }
 )
+export const createHotspotProrile = createAsyncThunk(
+    'hotspot/profile/create',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.create_profile(token, payload.uuid, payload.data)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+export const removeHotspotProfile = createAsyncThunk(
+    'hotspot/profile/remove',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token.access_token
+            return await SystemService.remove_profile(token, payload.uuid, payload.id)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+
 
 export const _hotspot = createSlice({
     name: 'hotspot',
@@ -77,6 +150,7 @@ export const _hotspot = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+
             .addCase(getHotspotProfiles.pending, (state) => {
                 state.isLoading = true
             })
@@ -86,6 +160,61 @@ export const _hotspot = createSlice({
                 state.hotspot_profiles = action.payload
             })
             .addCase(getHotspotProfiles.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            .addCase(createHotspot.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createHotspot.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.hotspot_profiles = action.payload
+            })
+            .addCase(createHotspot.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            
+            .addCase(removeHotspot.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeHotspot.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.hotspot_profiles = action.payload
+            })
+            .addCase(removeHotspot.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            .addCase(createHotspotProrile.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createHotspotProrile.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.hotspot_profiles = action.payload
+            })
+            .addCase(createHotspotProrile.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(removeHotspotProfile.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(removeHotspotProfile.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.hotspot_profiles = action.payload
+            })
+            .addCase(removeHotspotProfile.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

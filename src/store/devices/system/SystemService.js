@@ -288,6 +288,30 @@ const hotspots = async (token, uuid) => {
     }
     return response.data
 }
+
+const create_hotspot = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/hotspot`, data, config)
+
+    return response.data
+}
+const remove_hotspot = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/hotspot/${id}`, config)
+
+    return response.data
+}
+
+
+
 const hotspot_profiles = async (token, uuid) => {
     const config = {
         headers: {
@@ -300,6 +324,27 @@ const hotspot_profiles = async (token, uuid) => {
     }
     return response.data
 }
+const create_profile = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/hotspot/profiles`, data, config)
+
+    return response.data
+}
+const remove_profile = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/hotspot/profiles/${id}`, config)
+
+    return response.data
+}
+
 
 
 
@@ -308,6 +353,7 @@ const SystemService = {
     bridges, ports, vlans, create_vlans, create_bridges, create_ports, remove_bridges,
 
     addresses, pool, dns, create_addresses, create_pools, update_dns,
+    create_hotspot, create_profile, remove_profile, remove_hotspot,
 
     remove_address, remove_bridges, remove_ports, remove_vlans, remove_pools, hotspots, hotspot_profiles
 }

@@ -14,10 +14,10 @@ const IP = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { user, token, isLoading, isError, isSuccess, message } = useSelector(
+    const { user, token } = useSelector(
         (state) => state.auth
     );
-    const { addresses, pools, dns } = useSelector(
+    const { addresses, pools, dns, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.ip
     );
 
