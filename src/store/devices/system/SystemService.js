@@ -345,6 +345,70 @@ const remove_profile = async (token, uuid, id) => {
     return response.data
 }
 
+const users = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/hotspot/users`, config)
+    if (response.data) {
+        localStorage.setItem("users", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const add_user = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/hotspot/users`, data, config)
+
+    return response.data
+}
+const remove_user = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/hotspot/users/${id}`, config)
+
+    return response.data
+}
+const user_profile = async (token, uuid) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.get(url + `${uuid}/hotspot/users/profile`, config)
+    if (response.data) {
+        localStorage.setItem("user_profile", JSON.stringify(response.data));
+    }
+    return response.data
+}
+const add_user_profile = async (token, uuid, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.post(url + `${uuid}/hotspot/users/profile`, data, config)
+
+    return response.data
+}
+const remove_user_profile = async (token, uuid, id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.delete(url + `${uuid}/hotspot/users/profile/${id}`, config)
+
+    return response.data
+}
 
 
 
@@ -355,7 +419,8 @@ const SystemService = {
     addresses, pool, dns, create_addresses, create_pools, update_dns,
     create_hotspot, create_profile, remove_profile, remove_hotspot,
 
-    remove_address, remove_bridges, remove_ports, remove_vlans, remove_pools, hotspots, hotspot_profiles
+    remove_address, remove_bridges, remove_ports, remove_vlans, remove_pools, hotspots, hotspot_profiles,
+    users, add_user, remove_user, user_profile, add_user_profile, remove_user_profile
 }
 
 export default SystemService

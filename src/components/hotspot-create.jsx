@@ -123,7 +123,7 @@ const CreateHotspot = ({ uuid }) => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleHotspotShow} >Hotspot</Dropdown.Item>
+                    {/* <Dropdown.Item onClick={handleHotspotShow} >Hotspot</Dropdown.Item> */}
                     <Dropdown.Item onClick={handleProfileShow} >Profile</Dropdown.Item>
 
                 </Dropdown.Menu>
@@ -269,7 +269,7 @@ const CreateHotspot = ({ uuid }) => {
                     </Modal.Footer>
                 </Form>
             </Modal>
-            <Modal show={showHotspot} onHide={handleHotspotClose}>
+            {/* <Modal show={showHotspot} onHide={handleHotspotClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>New Server</Modal.Title>
                 </Modal.Header>
@@ -342,8 +342,6 @@ const CreateHotspot = ({ uuid }) => {
                                 placeholder="server.example.net"
                             />
                         </Form.Group>
-
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleHotspotClose}>
@@ -364,7 +362,7 @@ const CreateHotspot = ({ uuid }) => {
                         </Button>
                     </Modal.Footer>
                 </Form>
-            </Modal>
+            </Modal> */}
 
         </div>
     );

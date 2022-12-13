@@ -8,6 +8,7 @@ import bridgeReducer from './devices/system/bridge';
 import interfaceReducer from './devices/system/interface';
 import ipReducer from './devices/system/ip';
 import hotspotReducer from './devices/system/hotspot';
+import voucherReducer from './devices/system/voucher';
 
 export default configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export default configureStore({
     interfaces: interfaceReducer,
     ip: ipReducer,
     hotspot: hotspotReducer,
+    voucher: voucherReducer,
   },
 });

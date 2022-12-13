@@ -16,20 +16,22 @@ const CreateInterface = ({ uuid }) => {
     });
 
     const [vlan, setVlan] = useState({
-        vlan_name: "",
-        vlan_interface: "",
-        vlan_id: "",
+        vlan_bridge: "",
+        vlan_ids: "",
+        tagged: "",
+        untagged: "",
     });
 
     const [port, setPort] = useState({
         port_interface: "",
         port_bridge: "",
+        pvid: '',
     });
 
 
     const { bridge_name } = bridge;
-    const { vlan_name, vlan_interface, vlan_id } = vlan;
-    const { port_interface, port_bridge } = port;
+    const { vlan_bridge, vlan_ids, tagged, untagged } = vlan;
+    const { port_interface, port_bridge, pvid } = port;
 
 
     const handleBridgeClose = () => setShowBridge(false);
@@ -99,9 +101,10 @@ const CreateInterface = ({ uuid }) => {
         const payload = {
             uuid: uuid,
             data: {
-                vlan_id: vlan_id,
-                name: vlan_name,
-                interface: vlan_interface
+                bridge: vlan_bridge,
+                vlan_ids: vlan_ids,
+                tagged: tagged,
+                untagged: untagged
             }
         };
         dispatch(createVlans(payload));
@@ -113,7 +116,8 @@ const CreateInterface = ({ uuid }) => {
             uuid: uuid,
             data: {
                 interface: port_interface,
-                bridge: port_bridge
+                bridge: port_bridge,
+                pvid: pvid
             }
         };
 
@@ -180,51 +184,64 @@ const CreateInterface = ({ uuid }) => {
                 </Modal.Header>
                 <Form onSubmit={onVlanSubmit}>
                     <Modal.Body>
+
                         <Form.Group className="mb-3">
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>Bridge</Form.Label>
+                            <Form.Select onChange={onChangeVlan}
+                                id="vlan_bridge"
+                                name="vlan_bridge"
+                                value={vlan_bridge}
+                            >
+                                {
+                                    Object.keys(bridges).map((bridge, i) => (
+                                        <option key={i}>{bridges[bridge]['name']}</option>
+                                    ))
+                                }
+                            </Form.Select>
+
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>PVID</Form.Label>
+
                             <Form.Control
                                 onChange={onChangeVlan}
-                                id="vlan_name"
-                                name="vlan_name"
-                                value={vlan_name}
+                                id="vlan_ids"
+                                name="vlan_ids"
+                                value={vlan_ids}
                                 type="text"
-                                placeholder="Name"
+                                placeholder="1"
                             />
                         </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tagged</Form.Label>
+                            <Form.Select onChange={onChangeVlan}
+                                id="tagged"
+                                name="tagged"
+                                value={tagged}
+                            >
+                                {
+                                    Object.keys(interfaces).map((iface, i) => (
+                                        <option key={i}>{interfaces[iface]['name']}</option>
+                                    ))
+                                }
+                            </Form.Select>
 
-                        <Row>
-                            <Col sm={8}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Interface</Form.Label>
-                                    <Form.Select onChange={onChangeVlan}
-                                        id="vlan_interface"
-                                        name="vlan_interface"
-                                        value={vlan_interface}
-                                    >
-                                        {
-                                            Object.keys(interfaces).map((iface, i) => (
-                                                <option key={i}>{interfaces[iface]['name']}</option>
-                                            ))
-                                        }
-                                    </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Untagged</Form.Label>
+                            <Form.Select onChange={onChangeVlan}
+                                id="untagged"
+                                name="untagged"
+                                value={untagged}
+                            >
+                                {
+                                    Object.keys(interfaces).map((iface, i) => (
+                                        <option key={i}>{interfaces[iface]['name']}</option>
+                                    ))
+                                }
+                            </Form.Select>
 
-                                </Form.Group>
-                            </Col>
-                            <Col sm={4}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>VLAN ID</Form.Label>
-
-                                    <Form.Control
-                                        onChange={onChangeVlan}
-                                        id="vlan_id"
-                                        name="vlan_id"
-                                        value={vlan_id}
-                                        type="text"
-                                        placeholder="VLAN ID"
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        </Form.Group>
 
                     </Modal.Body>
                     <Modal.Footer>
@@ -254,7 +271,7 @@ const CreateInterface = ({ uuid }) => {
                 <Form onSubmit={onPortSubmit}>
                     <Modal.Body>
                         <Row>
-                            <Col sm={8}>
+                            <Col sm={6}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Interface</Form.Label>
                                     <Form.Select onChange={onChangePort}
@@ -271,7 +288,7 @@ const CreateInterface = ({ uuid }) => {
 
                                 </Form.Group>
                             </Col>
-                            <Col sm={4}>
+                            <Col sm={6}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>bridge_name</Form.Label>
                                     <Form.Select onChange={onChangePort}
@@ -289,6 +306,18 @@ const CreateInterface = ({ uuid }) => {
                                 </Form.Group>
                             </Col>
                         </Row>
+                        <Form.Group className="mb-3">
+                            <Form.Label>PVID</Form.Label>
+
+                            <Form.Control
+                                onChange={onChangePort}
+                                id="pvid"
+                                name="pvid"
+                                value={pvid}
+                                type="text"
+                                placeholder="1"
+                            />
+                        </Form.Group>
 
                     </Modal.Body>
                     <Modal.Footer>

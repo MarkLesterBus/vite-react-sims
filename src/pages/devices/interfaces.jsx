@@ -11,7 +11,6 @@ import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed, FaPlay, FaStop, FaTrash } from "react-icons/fa";
 import { MdCheck, MdCheckCircle, MdClose, MdDynamicFeed } from "react-icons/md";
 import CreateInterface from "../../components/interface-create";
-import { removeAddresses } from "../../store/devices/system/ip";
 const Interfaces = () => {
 
 
@@ -24,13 +23,14 @@ const Interfaces = () => {
     const { interfaces, isLoading, isError, message } = useSelector(
         (state) => state.interfaces
     );
-    const { bridges, } = useSelector(
+
+    const { bridges, bridgeIsLoading } = useSelector(
         (state) => state.bridges
     );
-    const { ports, } = useSelector(
+    const { ports, portIsLoading } = useSelector(
         (state) => state.ports
     );
-    const { vlans, } = useSelector(
+    const { vlans, vlanIsLoading } = useSelector(
         (state) => state.vlans
     );
 
@@ -63,7 +63,7 @@ const Interfaces = () => {
         <>
             <section className="container">
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
-                    <h1 className="h2">Interfaces {isLoading ? (
+                    <h1 className="h2">Interfaces {isLoading || bridgeIsLoading || vlanIsLoading || portIsLoading ? (
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </Spinner>
@@ -208,7 +208,6 @@ const Interfaces = () => {
                                     <th>Name</th>
                                     <th>Mac Address</th>
                                     <th>Interface</th>
-                                    <th>Running</th>
                                     <th>Disabled</th>
                                     <th>Actions</th>
                                 </tr>
@@ -218,17 +217,10 @@ const Interfaces = () => {
                                     Object.keys(vlans).map((vlan, i) => (
 
                                         <tr key={i}>
-                                            <td>{vlans[vlan]['vlan-id']}</td>
-                                            <td>{vlans[vlan]['name']}</td>
-                                            <td>{vlans[vlan]['mac-address']}</td>
-                                            <td>{vlans[vlan]['interface']}</td>
-                                            <td>{vlans[vlan]['running'] == "true" ?
-                                                (<Badge bg="success">
-                                                    <FaPlay size={15} />
-                                                </Badge>) : (<Badge bg="danger">
-                                                    <FaStop size={15} />
-                                                </Badge>)}
-                                            </td>
+                                            <td>{vlans[vlan]['bridge']}</td>
+                                            <td>{vlans[vlan]['vlan-ids']}</td>
+                                            <td>{vlans[vlan]['tagged']}</td>
+                                            <td>{vlans[vlan]['untagged']}</td>
                                             <td>{vlans[vlan]['disabled'] == "false" ?
                                                 (<Badge bg="success">
                                                     False

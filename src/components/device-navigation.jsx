@@ -93,19 +93,6 @@ const DeviceNavigation = ({ uuid }) => {
                             </li>
                             <li>
                                 <NavLink
-                                    to={`queues`}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link text-secondary"
-                                            : "nav-link text-white"
-                                    }
-                                >
-                                    <MdQueue className="bi d-block mx-auto mb-1" size={24} />
-                                    Queues
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
                                     to={`vouchers`}
                                     className={({ isActive }) =>
                                         isActive
@@ -120,6 +107,20 @@ const DeviceNavigation = ({ uuid }) => {
                                     Vouchers
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink
+                                    to={`queues`}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "nav-link text-secondary"
+                                            : "nav-link text-white"
+                                    }
+                                >
+                                    <MdQueue className="bi d-block mx-auto mb-1" size={24} />
+                                    Queues
+                                </NavLink>
+                            </li>
+
                             <li>
                                 <NavLink
                                     to={`logs`}
