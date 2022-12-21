@@ -26,7 +26,7 @@ import Footer from "./components/footer";
 function App() {
   const { uuid } = useParams();
   return (
-    <div id="App">
+    <div id="App" className="min-vh-100">
       <SVG />
       <Navigation />
 
@@ -53,7 +53,6 @@ function App() {
         <Route path="about" element={<About />} />
 
       </Routes>
-      <Footer />
     </div>
   );
 }

@@ -4,6 +4,8 @@ import { getUserProfile, getUsers, removeUser, removeUserProfile, reset } from "
 import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed, FaPlay, FaStop, FaTrash } from "react-icons/fa";
 import { useEffect } from "react";
+import CreateVoucher from "../../components/voucher-create";
+import Datatable from "../../components/datatable";
 const Vouchers = () => {
     const { uuid } = useParams();
     const navigate = useNavigate();
@@ -25,6 +27,20 @@ const Vouchers = () => {
         }
         return parseInt(bytes) + ' ' + units[i]
     }
+    const headers = [
+        { title: 'Name', value: 'name' },
+        { title: 'Profile', value: 'profile' },
+        { title: 'Uptime', value: 'uptime' },
+        { title: 'Bytes In', value: 'bytes-in' },
+        { title: 'Bytes Out', value: 'bytes-out' },
+        { title: 'Packets In', value: 'packets-in' },
+        { title: 'Packets Out', value: 'packets-out' },
+        { title: 'Dynamic', value: 'dynamic' },
+        { title: 'Disabled', value: 'disabled' },
+        { title: 'Actions', value: 'actions' },
+    ]
+
+
     useEffect(() => {
         if (isError) {
             console.log(message);
@@ -44,7 +60,7 @@ const Vouchers = () => {
 
     return (
         <>
-            <section className="container mb-9" >
+            <section className="container min-vh-100" >
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
                     <h1 className="h2">Vouchers {isLoading ? (
                         <Spinner animation="border" role="status">
@@ -52,17 +68,17 @@ const Vouchers = () => {
                         </Spinner>
                     ) : ""}</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
-                        {/* <CreateHotspot uuid={uuid} /> */}
+                        <CreateVoucher uuid={uuid} />
                     </div>
                 </div>
                 <Tabs
                     defaultActiveKey="users"
                     transition={false}
                     id="noanim-tab-example"
-                    className="mb-3"
+                    className="mb-2"
                 >
                     <Tab eventKey="users" title="Users">
-                        <Table className="mt-2" striped bordered hover>
+                        {/* <Table className="mt-2" striped bordered hover>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -117,7 +133,8 @@ const Vouchers = () => {
                                 }
 
                             </tbody>
-                        </Table>
+                        </Table> */}
+                        <Datatable items={users} headers={headers} items_per_page={15} />
                     </Tab>
 
                     <Tab eventKey="profile" title="User Profile">
