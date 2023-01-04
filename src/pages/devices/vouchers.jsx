@@ -30,11 +30,11 @@ const Vouchers = () => {
     const headers = [
         { title: 'Name', value: 'name' },
         { title: 'Profile', value: 'profile' },
+        { title: 'Limit Uptime', value: 'limit-uptime' },
         { title: 'Uptime', value: 'uptime' },
+        { title: 'Limit Bytes Total', value: 'limit-bytes-total' },
         { title: 'Bytes In', value: 'bytes-in' },
         { title: 'Bytes Out', value: 'bytes-out' },
-        { title: 'Packets In', value: 'packets-in' },
-        { title: 'Packets Out', value: 'packets-out' },
         { title: 'Dynamic', value: 'dynamic' },
         { title: 'Disabled', value: 'disabled' },
         { title: 'Actions', value: 'actions' },
@@ -68,7 +68,7 @@ const Vouchers = () => {
                         </Spinner>
                     ) : ""}</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
-                        <CreateVoucher uuid={uuid} />
+                        <CreateVoucher />
                     </div>
                 </div>
                 <Tabs

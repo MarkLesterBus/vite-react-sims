@@ -1,20 +1,27 @@
 import { useState } from "react";
 import { useDispatch, useSelector, } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 import { Col, Row, Dropdown, Button, Modal, Form, Spinner } from "react-bootstrap";
+import { createUser, createUserProfile, getUsers, getUserProfile } from "../store/devices/system/voucher";
 
-
-const CreateVoucher = ({ uuid }) => {
+const CreateVoucher = () => {
     const [showVoucher, setShowVoucher] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
+    const [addMACCookie, setaddMACCookie] = useState(true);
+    const { uuid } = useParams();
+
 
     const [voucher, setVoucher] = useState({
+        server: '',
         name: '',
         password: '',
         voucher_profile: '',
-        uptime: '',
-        bytes_in: '',
-        bytes_out: '',
+        limit_uptime: '',
+        limit_bytes_total: '',
+        comment: '',
+
 
     })
     const [profile, setProfile] = useState({
@@ -22,14 +29,17 @@ const CreateVoucher = ({ uuid }) => {
         shared_user: '',
         keepalive_timeoout: '',
         status_autorefresh: '',
+        mac_cookie_timeout: '',
+        rate_limit: '',
         on_login: '',
         on_logout: '',
-        address_list: '',
 
     })
 
-    const { name, password, voucher_profile, uptime, bytes_in, bytes_out } = voucher
-    const { profile_name, shared_user, keepalive_timeout, status_autorefresh, on_login, on_logout, address_list } = profile
+    const { server, name, password, voucher_profile, limit_uptime, limit_bytes_total, comment } = voucher
+    const { profile_name, shared_user, keepalive_timeout, status_autorefresh,
+        mac_cookie_timeout,
+        rate_limit, on_login, on_logout } = profile
 
 
 
@@ -61,44 +71,48 @@ const CreateVoucher = ({ uuid }) => {
     };
 
 
-    // const onProfileSubmit = (e) => {
-    //     e.preventDefault();
+    const onProfileSubmit = (e) => {
+        e.preventDefault();
 
-    //     const payload = {
-    //         uuid: uuid,
-    //         data: {
-    //             name: name,
-    //             hotspot_address: hotspot_address,
-    //             dns_name: dns_name,
-    //             html_directory: html_directory,
-    //             login_by: protocol.join(),
-    //             http_cookie_lifetime: http_cookie_lifetime,
-    //         }
-    //     };
-    //     dispatch(createHotspotProrile(payload));
-    //     dispatch(getHotspot(uuid));
-    //     dispatch(getHotspotProfiles(uuid));
+        const payload = {
+            uuid: uuid,
+            data: {
+                profile_name: profile_name,
+                shared_users: shared_users,
+                keepalive_timeout: keepalive_timeout,
+                status_autorefresh: status_autorefresh,
+                add_mac_cookie: addMACCookie,
+                mac_cookie_timeout: mac_cookie_timeout,
+                rate_limit: rate_limit,
+                on_login: on_login,
+                on_logout: on_logout,
+            }
+        };
+        console.log(payload)
 
-    // }
-    // const onHotspotSubmit = (e) => {
-    //     e.preventDefault();
+        dispatch(createUserProfile(payload));
+        dispatch(getUserProfile(uuid));
 
-    //     const payload = {
-    //         uuid: uuid,
-    //         data: {
-    //             name: server_name,
-    //             _interface: _interface,
-    //             _address_pool: pool,
-    //             profile: _profile,
-    //             addresses_per_mac: addresses_per_mac,
-    //         }
-    //     };
-    //     console.log(payload)
-    //     dispatch(createHotspot(payload));
-    //     dispatch(getHotspot(uuid));
-    //     dispatch(getHotspotProfiles(uuid));
+    }
+    const onVoucherSubmit = (e) => {
+        e.preventDefault();
 
-    // }
+        const payload = {
+            uuid: uuid,
+            data: {
+                name: name,
+                password: password,
+                voucher_profile: voucher_profile,
+                limit_uptime: limit_uptime,
+                limit_bytes_total: limit_bytes_total,
+                comment: comment
+            }
+        };
+        console.log(payload)
+        dispatch(createUser(payload));
+        dispatch(getUsers(uuid));
+
+    }
 
 
     return (
@@ -119,7 +133,7 @@ const CreateVoucher = ({ uuid }) => {
                 <Modal.Header closeButton>
                     <Modal.Title>New Voucher</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={''} >
+                <Form onSubmit={onVoucherSubmit} >
                     <Modal.Body>
 
                         <Form.Group className="mb-3">
@@ -160,39 +174,40 @@ const CreateVoucher = ({ uuid }) => {
 
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Uptime</Form.Label>
+                            <Form.Label>Limit Uptime</Form.Label>
                             <Form.Control
                                 onChange={onChangeVoucher}
-                                id="uptime"
-                                name="uptime"
-                                value={uptime}
+                                id="limit_uptime"
+                                name="limit_uptime"
+                                value={limit_uptime}
                                 type="text"
                                 placeholder="0w0d0h0m0s"
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Bytes In</Form.Label>
+                            <Form.Label>Limit Bytes total</Form.Label>
                             <Form.Control
                                 onChange={onChangeVoucher}
-                                id="byte_in"
-                                name="byte_in"
-                                value={bytes_in}
-                                type="number"
+                                id="limit_bytes_total"
+                                name="limit_bytes_total"
+                                value={limit_bytes_total}
+                                type="text"
                                 placeholder="0MB"
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Bytes Out</Form.Label>
+                            <Form.Label>Comment</Form.Label>
                             <Form.Control
                                 onChange={onChangeVoucher}
-                                id="bytes_out"
-                                name="bytes_out"
-                                value={bytes_out}
-                                type="number"
-                                placeholder="0MB"
+                                id="comment"
+                                name="comment"
+                                value={comment}
+                                type="text"
+                                as="textarea"
+
+                                placeholder=""
                             />
                         </Form.Group>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleVoucherClose}>
@@ -218,7 +233,7 @@ const CreateVoucher = ({ uuid }) => {
                 <Modal.Header closeButton>
                     <Modal.Title>New Profile</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={''} >
+                <Form onSubmit={onProfileSubmit} >
                     <Modal.Body>
 
                         <Form.Group className="mb-3">
@@ -256,17 +271,6 @@ const CreateVoucher = ({ uuid }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Keepalive Timeout</Form.Label>
-                            <Form.Control
-                                onChange={onChangeProfile}
-                                id="keepalive_timeout"
-                                name="keepalive_timeout"
-                                value={keepalive_timeout}
-                                type="text"
-                                placeholder="0m"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
                             <Form.Label>Status  Auto-refresh</Form.Label>
                             <Form.Control
                                 onChange={onChangeProfile}
@@ -275,6 +279,37 @@ const CreateVoucher = ({ uuid }) => {
                                 value={status_autorefresh}
                                 type="text"
                                 placeholder="0m"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Check id="add_mac_cookie"
+                                name="add"
+                                onChange={() => {
+                                    setaddMACCookie(!addMACCookie)
+                                }}
+                                type="checkbox" label="Add MAC Cookie" />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>MAC Cookie Timeout</Form.Label>
+                            <Form.Control
+                                onChange={onChangeProfile}
+                                disabled={addMACCookie}
+                                id="mac_cookie_timeout"
+                                name="mac_cookie_timeout"
+                                value={mac_cookie_timeout}
+                                type="text"
+                                placeholder="0w0d0h0m0s"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Rate Limit</Form.Label>
+                            <Form.Control
+                                onChange={onChangeProfile}
+                                id="rate_limit"
+                                name="rate_limit"
+                                value={rate_limit}
+                                type="text"
+                                placeholder="0M/0M"
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
@@ -301,18 +336,7 @@ const CreateVoucher = ({ uuid }) => {
                                 placeholder=""
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Address List</Form.Label>
-                            <Form.Control
-                                onChange={onChangeProfile}
-                                id="on_logout"
-                                name="on_logout"
-                                value={on_logout}
-                                type="text"
-                                as="textarea"
-                                placeholder=""
-                            />
-                        </Form.Group>
+
 
                     </Modal.Body>
                     <Modal.Footer>

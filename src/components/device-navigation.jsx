@@ -107,53 +107,7 @@ const DeviceNavigation = ({ uuid }) => {
                                     Vouchers
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink
-                                    to={`queues`}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link text-secondary"
-                                            : "nav-link text-white"
-                                    }
-                                >
-                                    <MdQueue className="bi d-block mx-auto mb-1" size={24} />
-                                    Queues
-                                </NavLink>
-                            </li>
 
-                            <li>
-                                <NavLink
-                                    to={`logs`}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link text-secondary"
-                                            : "nav-link text-white"
-                                    }
-                                >
-                                    <MdList className="bi d-block mx-auto mb-1" size={24} />
-                                    Logs
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to={`system`} className={({ isActive }) =>
-                                    isActive
-                                        ? "nav-link text-secondary"
-                                        : "nav-link text-white"
-                                }>
-                                    <FaCogs className="bi d-block mx-auto mb-1" size={24} />
-                                    System
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to={`users`} className={({ isActive }) =>
-                                    isActive
-                                        ? "nav-link text-secondary"
-                                        : "nav-link text-white"
-                                }>
-                                    <FaUsers className="bi d-block mx-auto mb-1" size={24} />
-                                    Users
-                                </NavLink>
-                            </li>
                         </ul>
                     </div>
                 </div>

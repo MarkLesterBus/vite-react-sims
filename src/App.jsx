@@ -46,7 +46,7 @@ function App() {
           <Route exact path="logs" element={<Logs />} />
           <Route exact path="system" element={<System />} />
           <Route exact path="users" element={<Users />} />
-          <Route path="accounts" element={<Accounts />} />
+          <Route exact path="accounts" element={<Accounts />} />
         </Route>
 
         <Route path="faqs" element={<FAQs />} />

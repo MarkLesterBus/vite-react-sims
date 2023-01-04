@@ -37,7 +37,7 @@ export const createUser = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.add_user(payload.uuid, payload.data, token)
+            return await SystemService.add_user(token, payload.uuid, payload.data)
         } catch (error) {
             const message =
                 (error.response &&
@@ -89,7 +89,7 @@ export const createUserProfile = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.token.access_token
-            return await SystemService.add_user_profile(payload.uuid, payload.data, token)
+            return await SystemService.add_user_profile(token, payload.uuid, payload.data,)
         } catch (error) {
             const message =
                 (error.response &&

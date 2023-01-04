@@ -53,7 +53,7 @@ const Navigation = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/devices">
+                    <Link className="dropdown-item" to="/accounts">
                       Acounts
                     </Link>
                   </li>
