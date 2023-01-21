@@ -1,3 +1,5 @@
+
+import React, {useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Navigation from "./components/navigation";
@@ -25,6 +27,7 @@ import Footer from "./components/footer";
 
 function App() {
   const { uuid } = useParams();
+ 
   return (
     <div id="App" className="min-vh-100">
       <SVG />

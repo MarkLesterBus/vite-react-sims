@@ -78,7 +78,7 @@ const CreateVoucher = () => {
             uuid: uuid,
             data: {
                 profile_name: profile_name,
-                shared_users: shared_users,
+                shared_users: shared_user,
                 keepalive_timeout: keepalive_timeout,
                 status_autorefresh: status_autorefresh,
                 add_mac_cookie: addMACCookie,
@@ -88,7 +88,6 @@ const CreateVoucher = () => {
                 on_logout: on_logout,
             }
         };
-        console.log(payload)
 
         dispatch(createUserProfile(payload));
         dispatch(getUserProfile(uuid));
@@ -108,7 +107,6 @@ const CreateVoucher = () => {
                 comment: comment
             }
         };
-        console.log(payload)
         dispatch(createUser(payload));
         dispatch(getUsers(uuid));
 
@@ -166,9 +164,10 @@ const CreateVoucher = () => {
                                 value={voucher_profile}
                             >
                                 {
-                                    Object.keys(user_profile).map((profile, i) => (
-                                        <option key={i}>{user_profile[profile]['name']}</option>
-                                    ))
+                                    typeof user_profile === 'object' && user_profile !== null ?
+                                        Object.keys(user_profile).map((profile, i) => (
+                                            <option key={i}>{user_profile[profile]['name']}</option>
+                                        )) : ''
                                 }
                             </Form.Select>
 

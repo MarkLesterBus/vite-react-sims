@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const bridges = JSON.parse(localStorage.getItem("bridges"));
+const bridges = localStorage.getItem("bridges");
 
 const initialState = {
 
-    bridges: bridges ? bridges : null,
+    bridges: bridges ? JSON.parse(bridges) : null,
     bridge: {},
     isError: false,
     isSuccess: false,

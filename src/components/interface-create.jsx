@@ -192,10 +192,10 @@ const CreateInterface = ({ uuid }) => {
                                 name="vlan_bridge"
                                 value={vlan_bridge}
                             >
-                                {
+                                {typeof bridges === 'object' && bridges !== null ?
                                     Object.keys(bridges).map((bridge, i) => (
                                         <option key={i}>{bridges[bridge]['name']}</option>
-                                    ))
+                                    )) : ''
                                 }
                             </Form.Select>
 
@@ -219,10 +219,10 @@ const CreateInterface = ({ uuid }) => {
                                 name="tagged"
                                 value={tagged}
                             >
-                                {
+                                {typeof interfaces === 'object' && interfaces !== null ?
                                     Object.keys(interfaces).map((iface, i) => (
                                         <option key={i}>{interfaces[iface]['name']}</option>
-                                    ))
+                                    )) : ''
                                 }
                             </Form.Select>
 
@@ -234,10 +234,10 @@ const CreateInterface = ({ uuid }) => {
                                 name="untagged"
                                 value={untagged}
                             >
-                                {
+                                {typeof interfaces === 'object' && interfaces !== null ?
                                     Object.keys(interfaces).map((iface, i) => (
                                         <option key={i}>{interfaces[iface]['name']}</option>
-                                    ))
+                                    )) : ''
                                 }
                             </Form.Select>
 
@@ -280,9 +280,10 @@ const CreateInterface = ({ uuid }) => {
                                         value={port_interface}
                                     >
                                         {
-                                            Object.keys(interfaces).map((iface, i) => (
-                                                <option key={i}>{interfaces[iface]['name']}</option>
-                                            ))
+                                            typeof interfaces === 'object' && interfaces !== null ?
+                                                Object.keys(interfaces).map((iface, i) => (
+                                                    <option key={i}>{interfaces[iface]['name']}</option>
+                                                )) : ''
                                         }
                                     </Form.Select>
 
@@ -297,9 +298,10 @@ const CreateInterface = ({ uuid }) => {
                                         value={port_bridge}
                                     >
                                         {
-                                            Object.keys(bridges).map((bridge, i) => (
-                                                <option key={i}>{bridges[bridge]['name']}</option>
-                                            ))
+                                            typeof bridges === 'object' && bridges !== null ?
+                                                Object.keys(bridges).map((bridge, i) => (
+                                                    <option key={i}>{bridges[bridge]['name']}</option>
+                                                )) : ''
                                         }
                                     </Form.Select>
 

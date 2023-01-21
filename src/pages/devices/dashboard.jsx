@@ -66,39 +66,43 @@ const Dashboard = () => {
         <div className="btn-toolbar mb-2 mb-md-0">
         </div>
       </div>
-      <Row>
-        <Col lg={3} md={6} sm={12}>
-          <SystemModel resources={resources} />
+      {
+        typeof resources === 'object' && resources !== null ?
+          <>
+            <Row>
+              <Col lg={3} md={6} sm={12}>
+                <SystemModel resources={resources} />
 
-        </Col>
-        <Col lg={3} md={6} sm={12}>
-          <SystemCPU resources={resources} />
+              </Col>
+              <Col lg={3} md={6} sm={12}>
+                <SystemCPU resources={resources} />
 
-        </Col>
-        <Col lg={3} md={6} sm={12}>
-          <SystemTime resources={resources} />
+              </Col>
+              <Col lg={3} md={6} sm={12}>
+                <SystemTime resources={resources} />
 
-        </Col>
-        <Col lg={3} md={6} sm={12}>
-          <SystemUptime resources={resources} />
+              </Col>
+              <Col lg={3} md={6} sm={12}>
+                <SystemUptime resources={resources} />
 
-        </Col>
+              </Col>
 
-      </Row>
-      <Row>
-        <Col lg={8} md={6} sm={12}>
-          <SystemTraffic tx={tx} rx={rx} timeline={timeline} />
-          <SystemLogs uuid={uuid} />
+            </Row>
+            <Row>
+              <Col lg={8} md={6} sm={12}>
+                <SystemTraffic tx={tx} rx={rx} timeline={timeline} />
 
+              </Col>
 
-        </Col>
+              <Col>
+                <SystemStorage resources={resources} />
+                <SystemMemory resources={resources} />
+              </Col>
 
-        <Col>
-          <SystemStorage resources={resources} />
-          <SystemMemory resources={resources} />
-        </Col>
+            </Row>
+          </> : ''
+      }
 
-      </Row>
     </section>
   );
 };

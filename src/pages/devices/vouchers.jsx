@@ -78,63 +78,9 @@ const Vouchers = () => {
                     className="mb-2"
                 >
                     <Tab eventKey="users" title="Users">
-                        {/* <Table className="mt-2" striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Profile</th>
-                                    <th>Uptime</th>
-                                    <th>Bytes In</th>
-                                    <th>Bytes Out</th>
-                                    <th>Packets In</th>
-                                    <th>Packets Out</th>
-                                    <th>Disabled</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    Object.keys(users).map((user, index) => (
-
-                                        <tr key={index}>
-                                            <td>{users[user]['name']}</td>
-                                            <td>{users[user]['profile']}</td>
-                                            <td>{users[user]['uptime']}</td>
-                                            <td>{bytesForHuman(users[user]['bytes-in'])}</td>
-                                            <td>{bytesForHuman(users[user]['bytes-out'])}</td>
-                                            <td>{bytesForHuman(users[user]['packets-in'])}</td>
-                                            <td>{bytesForHuman(users[user]['packets-out'])}</td>
-                                            <td>{users[user]['disabled'] == "false" ?
-                                                (<Badge bg="success">
-                                                    Enabled
-                                                </Badge>) : (<Badge bg="warning">
-                                                    Disabled
-                                                </Badge>)}</td>
-                                            <td>
-                                                <div>
-
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: users[user]['.id']
-                                                        }
-                                                        dispatch(removeUser(payload))
-                                                        dispatch(getUsers(uuid))
-
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
-
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    ))
-                                }
-
-                            </tbody>
-                        </Table> */}
-                        <Datatable items={users} headers={headers} items_per_page={15} />
+                        {
+                            typeof users === 'object' && users !== null ? <Datatable items={users} headers={headers} items_per_page={15} /> : ''
+                        }
                     </Tab>
 
                     <Tab eventKey="profile" title="User Profile">
@@ -146,6 +92,7 @@ const Vouchers = () => {
                                     <th>Keepalive Timeout</th>
                                     <th>Status Autorefresh</th>
                                     <th>Shared User</th>
+                                    <th>Rate Limit</th>
                                     <th>On Login</th>
                                     <th>On Logout</th>
                                     <th>Actions</th>
@@ -153,36 +100,38 @@ const Vouchers = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(user_profile).map((profile, index) => (
+                                    typeof user_profile === 'object' && user_profile !== null ?
+                                        Object.keys(user_profile).map((profile, index) => (
 
-                                        <tr key={index}>
-                                            <td>{user_profile[profile]['name']}</td>
-                                            <td>{user_profile[profile]['idle-timeoute']}</td>
-                                            <td>{user_profile[profile]['keepalive-timeout']}</td>
-                                            <td>{user_profile[profile]['status-autorefresh']}</td>
-                                            <td>{user_profile[profile]['shared-users']}</td>
-                                            <td>{user_profile[profile]['on-login']}</td>
-                                            <td>{user_profile[profile]['on-logout']}</td>
-                                            <td>
-                                                <div>
+                                            <tr key={index}>
+                                                <td>{user_profile[profile]['name']}</td>
+                                                <td>{user_profile[profile]['idle-timeoute']}</td>
+                                                <td>{user_profile[profile]['keepalive-timeout']}</td>
+                                                <td>{user_profile[profile]['status-autorefresh']}</td>
+                                                <td>{user_profile[profile]['shared-users']}</td>
+                                                <td>{user_profile[profile]['rate-limit']}</td>
+                                                <td>{user_profile[profile]['on-login']}</td>
+                                                <td>{user_profile[profile]['on-logout']}</td>
+                                                <td>
+                                                    <div>
 
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: user_profile[profile]['.id']
-                                                        }
-                                                        dispatch(removeUserProfile(payload))
-                                                        dispatch(getUserProfile(uuid))
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: user_profile[profile]['.id']
+                                                            }
+                                                            dispatch(removeUserProfile(payload))
+                                                            dispatch(getUserProfile(uuid))
 
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )) : ''
                                 }
 
                             </tbody>

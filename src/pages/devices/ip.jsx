@@ -74,45 +74,46 @@ const IP = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(addresses).map((address, index) => (
+                                    typeof pools === 'object' && pools !== null ?
+                                        Object.keys(addresses).map((address, index) => (
 
-                                        <tr key={index}>
-                                            <td>{addresses[address]['address']}</td>
-                                            <td>{addresses[address]['network']}</td>
-                                            <td>{addresses[address]['interface']}</td>
-                                            <td>{addresses[address]['dynamic'] == "true" ?
-                                                (<Badge bg="success">
-                                                    <FaPlay size={15} />
-                                                </Badge>) : (<Badge bg="danger">
-                                                    <FaStop size={15} />
-                                                </Badge>)}</td>
-                                            <td>{addresses[address]['disabled'] == "false" ?
-                                                (<Badge bg="success">
-                                                    Enabled
-                                                </Badge>) : (<Badge bg="warning">
-                                                    Disabled
-                                                </Badge>)}</td>
-                                            <td>{addresses[address]['commnet']}</td>
-                                            <td>
-                                                <div>
+                                            <tr key={index}>
+                                                <td>{addresses[address]['address']}</td>
+                                                <td>{addresses[address]['network']}</td>
+                                                <td>{addresses[address]['interface']}</td>
+                                                <td>{addresses[address]['dynamic'] == "true" ?
+                                                    (<Badge bg="success">
+                                                        <FaPlay size={15} />
+                                                    </Badge>) : (<Badge bg="danger">
+                                                        <FaStop size={15} />
+                                                    </Badge>)}</td>
+                                                <td>{addresses[address]['disabled'] == "false" ?
+                                                    (<Badge bg="success">
+                                                        Enabled
+                                                    </Badge>) : (<Badge bg="warning">
+                                                        Disabled
+                                                    </Badge>)}</td>
+                                                <td>{addresses[address]['commnet']}</td>
+                                                <td>
+                                                    <div>
 
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: addresses[address]['.id']
-                                                        }
-                                                        dispatch(removeAddresses(payload))
-                                                        dispatch(getAddresses(uuid))
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: addresses[address]['.id']
+                                                            }
+                                                            dispatch(removeAddresses(payload))
+                                                            dispatch(getAddresses(uuid))
 
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )) : ''
                                 }
 
                             </tbody>
@@ -130,31 +131,32 @@ const IP = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(pools).map((pool, index) => (
+                                    typeof pools === 'object' && pools !== null ?
+                                        Object.keys(pools).map((pool, index) => (
 
-                                        <tr key={index}>
-                                            <td>{pools[pool]['name']}</td>
-                                            <td>{pools[pool]['ranges']}</td>
-                                            <td>
-                                                <div>
+                                            <tr key={index}>
+                                                <td>{pools[pool]['name']}</td>
+                                                <td>{pools[pool]['ranges']}</td>
+                                                <td>
+                                                    <div>
 
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: pools[pool]['.id']
-                                                        }
-                                                        dispatch(removePools(payload))
-                                                        dispatch(getPools(uuid))
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: pools[pool]['.id']
+                                                            }
+                                                            dispatch(removePools(payload))
+                                                            dispatch(getPools(uuid))
 
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )) : ''
                                 }
 
                             </tbody>
@@ -173,12 +175,12 @@ const IP = () => {
 
                                 <tr>
                                     <td>Servers</td>
-                                    <td>{dns[0]['servers']}</td>
+                                    <td>{typeof dns === 'object' && dns !== null ? dns[0]['servers'] : ''}</td>
 
                                 </tr>
                                 <tr>
                                     <td>Dynmic Servers</td>
-                                    <td>{dns[0]['dynamic-servers']}</td>
+                                    <td>{typeof dns === 'object' && dns !== null ? dns[0]['dynamic-servers'] : ''}</td>
 
                                 </tr>
 

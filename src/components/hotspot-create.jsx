@@ -216,7 +216,7 @@ const CreateHotspot = ({ uuid }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Hotspot Address</Form.Label>
+                            <Form.Label>DNS Name</Form.Label>
                             <Form.Control
                                 onChange={onChangeProfile}
                                 id="dns_name"
@@ -227,7 +227,7 @@ const CreateHotspot = ({ uuid }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Hotspot Address</Form.Label>
+                            <Form.Label>HTML Directory</Form.Label>
                             <Form.Control
                                 onChange={onChangeProfile}
                                 id="html_directory"

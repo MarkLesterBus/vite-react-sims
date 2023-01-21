@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const addresses = JSON.parse(localStorage.getItem("addresses"));
-const pools = JSON.parse(localStorage.getItem("pools"));
-const dns = JSON.parse(localStorage.getItem("dns"));
+const addresses = localStorage.getItem("addresses");
+const pools = localStorage.getItem("pools");
+const dns = localStorage.getItem("dns");
 
 const initialState = {
 
-    addresses: addresses ? addresses : null,
-    pools: pools ? pools : null,
-    dns: dns ? dns : null,
+    addresses: addresses ? JSON.parse(addresses) : null,
+    pools: pools ? JSON.parse(pools) : null,
+    dns: dns ? JSON.parse(dns) : null,
 
     isError: false,
     isSuccess: false,

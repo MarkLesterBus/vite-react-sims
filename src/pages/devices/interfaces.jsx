@@ -11,8 +11,10 @@ import { Col, Table, Tab, Tabs, Spinner, Badge, Button } from "react-bootstrap";
 import { FaCogs, FaDoorClosed, FaPlay, FaStop, FaTrash } from "react-icons/fa";
 import { MdCheck, MdCheckCircle, MdClose, MdDynamicFeed } from "react-icons/md";
 import CreateInterface from "../../components/interface-create";
+import SystemService from "../../store/devices/system/SystemService";
+import { useState } from "react";
 const Interfaces = () => {
-
+    const [ifaces, setIfaces] = useState([])
 
     const { uuid } = useParams();
 
@@ -34,7 +36,10 @@ const Interfaces = () => {
         (state) => state.vlans
     );
 
-
+    const getIfaces = () => {
+        const rs = SystemService.interfaces(token, uuid)
+        setIfaces(rs)
+    }
 
     useEffect(() => {
         if (isError) {
@@ -49,7 +54,6 @@ const Interfaces = () => {
         dispatch(getBridges(uuid))
         dispatch(getPorts(uuid))
         dispatch(getVlans(uuid))
-
 
         return () => {
             dispatch(reset());
@@ -95,35 +99,34 @@ const Interfaces = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(interfaces).map((iface, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{interfaces[iface].name}</td>
-                                                <td>{interfaces[iface]['default-name']}</td>
-                                                <td>{interfaces[iface]['type']}</td>
-                                                <td>{interfaces[iface]['mac-address']}</td>
-                                                <td>{interfaces[iface]['tx-byte']}</td>
-                                                <td>{interfaces[iface]['rx-byte']}</td>
-                                                <td>{interfaces[iface]['running'] == "true" ?
-                                                    (<Badge bg="success">
-                                                        <FaPlay size={15} />
-                                                    </Badge>) : (<Badge bg="danger">
-                                                        <FaStop size={15} />
-                                                    </Badge>)}</td>
-                                                <td>{interfaces[iface]['disabled'] == "false" ?
-                                                    (<Badge bg="success">
-                                                        Enabled
-                                                    </Badge>) : (<Badge bg="warning">
-                                                        Disabled
-                                                    </Badge>)}</td>
-                                                <td>{interfaces[iface]['last-link-up-time']}</td>
-
-                                            </tr>
-
-                                        )
-                                    })
+                                    typeof interfaces === 'object' && interfaces !== null ?
+                                        Object.keys(interfaces).map((iface, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{interfaces[iface].name}</td>
+                                                    <td>{interfaces[iface]['default-name']}</td>
+                                                    <td>{interfaces[iface]['type']}</td>
+                                                    <td>{interfaces[iface]['mac-address']}</td>
+                                                    <td>{interfaces[iface]['tx-byte']}</td>
+                                                    <td>{interfaces[iface]['rx-byte']}</td>
+                                                    <td>{interfaces[iface]['running'] == "true" ?
+                                                        (<Badge bg="success">
+                                                            <FaPlay size={15} />
+                                                        </Badge>) : (<Badge bg="danger">
+                                                            <FaStop size={15} />
+                                                        </Badge>)}</td>
+                                                    <td>{interfaces[iface]['disabled'] == "false" ?
+                                                        (<Badge bg="success">
+                                                            Enabled
+                                                        </Badge>) : (<Badge bg="warning">
+                                                            Disabled
+                                                        </Badge>)}</td>
+                                                    <td>{interfaces[iface]['last-link-up-time']}</td>
+                                                </tr>
+                                            )
+                                        })
+                                        : ''
                                 }
-
                             </tbody>
                         </Table>
                     </Tab>
@@ -142,7 +145,7 @@ const Interfaces = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {typeof bridges === 'object' && bridges !== null ?
                                     Object.keys(bridges).map((bridge, i) => (
 
                                         <tr key={i}>
@@ -194,7 +197,7 @@ const Interfaces = () => {
                                             </td>
                                         </tr>
 
-                                    ))
+                                    )) : ''
                                 }
 
                             </tbody>
@@ -214,40 +217,41 @@ const Interfaces = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(vlans).map((vlan, i) => (
+                                    typeof vlans === 'object' && vlans !== null ?
+                                        Object.keys(vlans).map((vlan, i) => (
 
-                                        <tr key={i}>
-                                            <td>{vlans[vlan]['bridge']}</td>
-                                            <td>{vlans[vlan]['vlan-ids']}</td>
-                                            <td>{vlans[vlan]['tagged']}</td>
-                                            <td>{vlans[vlan]['untagged']}</td>
-                                            <td>{vlans[vlan]['disabled'] == "false" ?
-                                                (<Badge bg="success">
-                                                    False
-                                                </Badge>) : (<Badge bg="danger">
-                                                    Disabled
-                                                </Badge>)}
-                                            </td>
-                                            <td>
-                                                <div>
+                                            <tr key={i}>
+                                                <td>{vlans[vlan]['bridge']}</td>
+                                                <td>{vlans[vlan]['vlan-ids']}</td>
+                                                <td>{vlans[vlan]['tagged']}</td>
+                                                <td>{vlans[vlan]['untagged']}</td>
+                                                <td>{vlans[vlan]['disabled'] == "false" ?
+                                                    (<Badge bg="success">
+                                                        False
+                                                    </Badge>) : (<Badge bg="danger">
+                                                        Disabled
+                                                    </Badge>)}
+                                                </td>
+                                                <td>
+                                                    <div>
 
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: vlans[vlan]['.id']
-                                                        }
-                                                        dispatch(removeVlans(payload))
-                                                        dispatch(getVlans(uuid))
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: vlans[vlan]['.id']
+                                                            }
+                                                            dispatch(removeVlans(payload))
+                                                            dispatch(getVlans(uuid))
 
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )) : ''
                                 }
 
                             </tbody>
@@ -269,7 +273,7 @@ const Interfaces = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {typeof ports === 'object' && ports !== null ?
                                     Object.keys(ports).map((port, i) => (
 
                                         <tr key={i}>
@@ -315,7 +319,7 @@ const Interfaces = () => {
 
                                         </tr>
 
-                                    ))
+                                    )) : ''
                                 }
 
                             </tbody>

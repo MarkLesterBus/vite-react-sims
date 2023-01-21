@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const vlans = JSON.parse(localStorage.getItem("vlans"));
+const vlans = localStorage.getItem("vlans");
 
 const initialState = {
 
-    vlans: vlans ? vlans : null,
+    vlans: vlans ? JSON.parse(vlans) : null,
     vlan: {},
     isError: false,
     isSuccess: false,

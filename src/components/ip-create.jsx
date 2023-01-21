@@ -136,9 +136,10 @@ const CreateIP = ({ uuid }) => {
                                 value={_interface}
                             >
                                 {
-                                    Object.keys(interfaces).map((iface, i) => (
-                                        <option key={i}>{interfaces[iface]['name']}</option>
-                                    ))
+                                    typeof interfaces === 'object' && interfaces !== null ?
+                                        Object.keys(interfaces).map((iface, i) => (
+                                            <option key={i}>{interfaces[iface]['name']}</option>
+                                        )) : ''
                                 }
                             </Form.Select>
 

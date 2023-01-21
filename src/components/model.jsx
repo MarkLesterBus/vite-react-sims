@@ -19,7 +19,6 @@ const SystemModel = ({ resources }) => {
 
             </div>
         </div>
-
     );
 }
 

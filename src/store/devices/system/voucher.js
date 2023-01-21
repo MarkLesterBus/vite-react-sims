@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const users = JSON.parse(localStorage.getItem("users"));
-const user_profile = JSON.parse(localStorage.getItem("user_profile"));
+const users = localStorage.getItem("users");
+const user_profile = localStorage.getItem("user_profile");
 
 const initialState = {
 
-    users: users ? users : null,
-    user_profile: user_profile ? user_profile : null,
+    users: users ? JSON.parse(users) : null,
+    user_profile: user_profile ? JSON.parse(user_profile) : null,
     isError: false,
     isSuccess: false,
     isLoading: false,

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const ports = JSON.parse(localStorage.getItem("ports"));
+const ports = localStorage.getItem("ports");
 
 const initialState = {
 
-    ports: ports ? ports : null,
+    ports: ports ? JSON.parse(ports) : null,
     port: {},
     isError: false,
     isSuccess: false,

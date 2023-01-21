@@ -72,49 +72,48 @@ const Hotspot = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(hotspots).map((hs, index) => (
+                                    typeof hotspots === 'object' && hotspots !== null ?
+                                        Object.keys(hotspots).map((hs, index) => (
 
-                                        <tr key={index}>
-                                            <td>{hotspots[hs]['name']}</td>
-                                            <td>{hotspots[hs]['interface']}</td>
-                                            <td>{hotspots[hs]['address-pool']}</td>
-                                            <td>{hotspots[hs]['profile']}</td>
-                                            <td>{hotspots[hs]['addresses-per-mac']}</td>
-                                            <td>{hotspots[hs]['ip-of-dns-name']}</td>
-                                            <td>{hotspots[hs]['HTTPS']}</td>
+                                            <tr key={index}>
+                                                <td>{hotspots[hs]['name']}</td>
+                                                <td>{hotspots[hs]['interface']}</td>
+                                                <td>{hotspots[hs]['address-pool']}</td>
+                                                <td>{hotspots[hs]['profile']}</td>
+                                                <td>{hotspots[hs]['addresses-per-mac']}</td>
+                                                <td>{hotspots[hs]['ip-of-dns-name']}</td>
+                                                <td>{hotspots[hs]['HTTPS']}</td>
 
-                                            <td>{hotspots[hs]['disabled'] == "false" ?
-                                                (<Badge bg="success">
-                                                    Enabled
-                                                </Badge>) : (<Badge bg="warning">
-                                                    Disabled
-                                                </Badge>)}</td>
-                                            <td>
-                                                <div>
+                                                <td>{hotspots[hs]['disabled'] == "false" ?
+                                                    (<Badge bg="success">
+                                                        Enabled
+                                                    </Badge>) : (<Badge bg="warning">
+                                                        Disabled
+                                                    </Badge>)}</td>
+                                                <td>
+                                                    <div>
 
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: hotspots[hs]['.id']
-                                                        }
-                                                        dispatch(removeHotspot(payload))
-                                                        dispatch(getHotspot(uuid))
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: hotspots[hs]['.id']
+                                                            }
+                                                            dispatch(removeHotspot(payload))
+                                                            dispatch(getHotspot(uuid))
 
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                    ))
+                                        )) : ''
                                 }
-
                             </tbody>
                         </Table>
                     </Tab>
-
                     <Tab eventKey="profile" title="Server Profile">
                         <Table className="mt-2" striped bordered hover>
                             <thead>
@@ -129,47 +128,38 @@ const Hotspot = () => {
                             </thead>
                             <tbody>
                                 {
-                                    Object.keys(hotspot_profiles).map((profile, index) => (
-
-                                        <tr key={index}>
-                                            <td>{hotspot_profiles[profile]['name']}</td>
-                                            <td>{hotspot_profiles[profile]['hotspot-address']}</td>
-                                            <td>{hotspot_profiles[profile]['dns-name']}</td>
-                                            <td>{hotspot_profiles[profile]['html-directory']}</td>
-                                            <td>{hotspot_profiles[profile]['login-by']}</td>
-                                            <td>{hotspot_profiles[profile]['http-cookie-lifetime']}</td>
-                                            <td>
-                                                <div>
-
-                                                    <Button onClick={() => {
-                                                        const payload = {
-                                                            uuid: uuid,
-                                                            id: hotspot_profiles[profile]['.id']
-                                                        }
-                                                        dispatch(removeHotspotProfile(payload))
-                                                        dispatch(getHotspotProfiles(uuid))
-
-                                                    }} variant="danger" size="sm">
-                                                        <FaTrash /> Delete
-                                                    </Button>
-
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    ))
+                                    typeof hotspot_profiles === 'object' && hotspot_profiles !== null ?
+                                        Object.keys(hotspot_profiles).map((profile, index) => (
+                                            <tr key={index}>
+                                                <td>{hotspot_profiles[profile]['name']}</td>
+                                                <td>{hotspot_profiles[profile]['hotspot-address']}</td>
+                                                <td>{hotspot_profiles[profile]['dns-name']}</td>
+                                                <td>{hotspot_profiles[profile]['html-directory']}</td>
+                                                <td>{hotspot_profiles[profile]['login-by']}</td>
+                                                <td>{hotspot_profiles[profile]['http-cookie-lifetime']}</td>
+                                                <td>
+                                                    <div>
+                                                        <Button onClick={() => {
+                                                            const payload = {
+                                                                uuid: uuid,
+                                                                id: hotspot_profiles[profile]['.id']
+                                                            }
+                                                            dispatch(removeHotspotProfile(payload))
+                                                            dispatch(getHotspotProfiles(uuid))
+                                                        }} variant="danger" size="sm">
+                                                            <FaTrash /> Delete
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )) : ''
                                 }
-
                             </tbody>
                         </Table>
                     </Tab>
-
-
                 </Tabs>
-
             </section>
         </>
-
     )
 
 }

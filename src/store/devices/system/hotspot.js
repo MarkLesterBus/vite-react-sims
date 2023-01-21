@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import SystemService from './SystemService'
 
-const hotspots = JSON.parse(localStorage.getItem("hotspots"));
-const hotspot_profiles = JSON.parse(localStorage.getItem("hotspot_profiles"));
+const hotspots = localStorage.getItem("hotspots");
+const hotspot_profiles = localStorage.getItem("hotspot_profiles");
 
 const initialState = {
 
-    hotspots: hotspots ? hotspots : null,
-    hotspot_profiles: hotspot_profiles ? hotspot_profiles : null,
+    hotspots: hotspots ? JSON.parse(hotspots) : null,
+    hotspot_profiles: hotspot_profiles ? JSON.parse(hotspot_profiles) : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -178,7 +178,7 @@ export const _hotspot = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-            
+
             .addCase(removeHotspot.pending, (state) => {
                 state.isLoading = true
             })
